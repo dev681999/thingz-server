@@ -40,8 +40,6 @@ func newApp(config *appConfig) *app {
 		config.NATSUrl = nats.DefaultURL
 	}
 
-	// nats.Connect(config.NATSUrl)
-
 	return &app{
 		c:  config,
 		db: s,
@@ -50,13 +48,13 @@ func newApp(config *appConfig) *app {
 	}
 }
 
-func (a *app) initApp() error {
+func (a *app) Init() error {
 	log.Println("init start")
 	log.Println("connecting db")
 
 	err := a.db.Connect()
 	if err != nil {
-		a.closeApp()
+		a.Close()
 		return err
 	}
 
@@ -65,7 +63,7 @@ func (a *app) initApp() error {
 
 	err = a.eb.Connect(lib.ProtobufEnc)
 	if err != nil {
-		a.closeApp()
+		a.Close()
 		return err
 	}
 
@@ -75,7 +73,8 @@ func (a *app) initApp() error {
 	return nil
 }
 
-func (a *app) closeApp() {
+func (a *app) Close() {
+	log.Println("closing start")
 	log.Println("closing db connection")
 
 	if a.db != nil {
@@ -91,4 +90,8 @@ func (a *app) closeApp() {
 
 	log.Println("closed nats connection")
 	log.Println("close complete")
+}
+
+func (a *app) Test() string {
+	return "user-srv"
 }

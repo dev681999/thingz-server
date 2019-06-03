@@ -7,6 +7,10 @@ import (
 	penc "github.com/nats-io/nats.go/encoders/protobuf"
 )
 
+func init() {
+	nats.RegisterEncoder(penc.PROTOBUF_ENCODER, &penc.ProtobufEncoder{})
+}
+
 const (
 	// JSONEnc is JSON Encoded NATS connection
 	JSONEnc = nats.JSON_ENCODER
@@ -83,7 +87,7 @@ func (b *EventBus) Connect(encoder string) error {
 
 // Close closes the connection to the event bus
 func (b *EventBus) Close() {
-	if b.nc != nil && !b.nc.IsClosed() {
+	if b.nc != nil && b.enc != nil && !b.nc.IsClosed() {
 		b.enc.Close()
 		b.nc.Close()
 	}
