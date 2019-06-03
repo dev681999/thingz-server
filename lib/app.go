@@ -32,6 +32,22 @@ func ConfigFromFile(config interface{}) error {
 	return json.Unmarshal(data, config)
 }
 
+// SaveConfigToFile return a config from a JSON file
+func SaveConfigToFile(config interface{}) error {
+	file := defaultConfigFile
+	if len(os.Args) > 1 && os.Args[1] != "" {
+		file = os.Args[1]
+	}
+
+	data, err := json.MarshalIndent(config, "", "	")
+
+	if err != nil {
+		return err
+	}
+
+	return ioutil.WriteFile(file, data, 777)
+}
+
 // RunApp return a config from a JSON file
 func RunApp(a app) error {
 	err := a.Init()

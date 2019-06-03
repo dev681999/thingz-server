@@ -4,6 +4,7 @@ import (
 	"log"
 	"thingz-server/lib"
 
+	"github.com/globalsign/mgo"
 	nats "github.com/nats-io/nats.go"
 )
 
@@ -90,6 +91,25 @@ func (a *app) Init() error {
 	}
 
 	log.Println("registering to event-bus complete")
+
+	db, err := a.db.GetMongoSession()
+	if err != nil {
+		a.Close()
+		return err
+	}
+
+	defer db.Close()
+
+	collection := db.DB("").C(collectionName)
+	if err := collection.EnsureIndex(mgo.Index{
+		Key:        []string{"email"},
+		Unique:     true,
+		DropDups:   true,
+		Background: false,
+	}); err != nil {
+		return err
+	}
+
 	log.Println("init complete")
 
 	return nil

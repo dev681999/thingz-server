@@ -9,6 +9,7 @@ import (
 )
 
 func (a *app) createUser(_, reply string, req *proto.CreateUserRequest) {
+	log.Printf("create req: %+v", req)
 	resp := &proto.CreateUserResponse{}
 	db, err := a.db.GetMongoSession()
 	if err == nil {
@@ -23,12 +24,14 @@ func (a *app) createUser(_, reply string, req *proto.CreateUserRequest) {
 	if err != nil {
 		resp.Success = false
 		resp.Error = err.Error()
+	} else {
+		resp.Success = true
+		resp.Id = req.User.Id
 	}
 
+	log.Printf("Request: %+v, Resposne: %+v", req, resp)
 	if reply != "" {
 		a.eb.SendMessage(reply, resp)
-	} else {
-		log.Printf("Request: %+v, Resposne: %+v", req, resp)
 	}
 }
 
@@ -47,6 +50,7 @@ func (a *app) verifyUser(_, reply string, req *proto.VerifyUserRequest) {
 		resp.Success = false
 		resp.Error = err.Error()
 	} else {
+		resp.Success = true
 		resp.User = user
 	}
 

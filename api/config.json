@@ -1,0 +1,9 @@
+{
+	"addr": ":8000",
+	"dbUrl": "localhost:27017",
+	"dbUser": "",
+	"dbPass": "",
+	"dbName": "thingz-test",
+	"jwt": "bbce65bd-af92-403f-98c2-665126b482a6",
+	"natsUrl": ""
+}
