@@ -68,6 +68,28 @@ func (a *app) Init() error {
 	}
 
 	log.Println("connecting nats sucess")
+	log.Println("registering to event-bus")
+
+	base := "server.User."
+
+	listeners := []lib.Listener{
+		lib.Listener{
+			Topic: base + "CreateUser",
+			Func:  a.createUser,
+		},
+		lib.Listener{
+			Topic: base + "VerifyUser",
+			Func:  a.verifyUser,
+		},
+	}
+
+	err = a.eb.RegisterListeners(listeners)
+	if err != nil {
+		a.Close()
+		return err
+	}
+
+	log.Println("registering to event-bus complete")
 	log.Println("init complete")
 
 	return nil
