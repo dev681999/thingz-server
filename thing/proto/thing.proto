@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package proto;
+
+enum Unit {
+  BOOL = 0;
+  NUMBER = 1;
+  STRING = 2;
+  DATA = 3;
+}
+
+message Channel {
+  // @inject_tag: bson:"_id"
+  string id = 1;
+  string thing = 2;
+  string name = 3;
+  double floatValue = 4;
+  string stringValue = 5;
+  bool boolValue = 6;
+  bool dataValue = 7;
+  Unit unit = 8;
+}
+
+message Thing {
+  // @inject_tag: bson:"_id"
+  string id = 1;
+  string project = 2;
+  string name = 3;
+  repeated Channel channels = 4;
+}
+
+message CreateThingRequest { Thing thing = 1; }
+
+message CreateThingResponse {
+  bool success = 1;
+  string error = 2;
+  string id = 3;
+}
+
+message ProjectThingsRequest { string project = 1; }
+
+message ProjectThingsResponse {
+  bool success = 1;
+  string error = 2;
+  repeated Thing things = 3;
+}

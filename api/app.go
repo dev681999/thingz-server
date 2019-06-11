@@ -69,6 +69,21 @@ func (a *app) Init() error {
 
 	api.Use(middleware.JWT([]byte(a.c.JwtSecret)))
 
+	project := api.Group("/project")
+	thing := api.Group("/thing")
+
+	project.POST("/", a.createProject)
+	project.POST("", a.createProject)
+
+	project.GET("/", a.userProjects)
+	project.GET("", a.userProjects)
+
+	thing.POST("/", a.createThing)
+	thing.POST("", a.createThing)
+
+	thing.GET("/:id/", a.projectThings)
+	thing.GET("/:id", a.projectThings)
+
 	go func() {
 		if err := a.e.Start(a.c.Addr); err != nil {
 			log.Println("HTTP server shutdown")

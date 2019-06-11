@@ -3,13 +3,12 @@ package main
 import (
 	"log"
 	"thingz-server/lib"
-	"thingz-server/user/topics"
+	"thingz-server/project/topics"
 
-	"github.com/globalsign/mgo"
 	nats "github.com/nats-io/nats.go"
 )
 
-var collectionName = "users"
+var collectionName = "projects"
 
 type appConfig struct {
 	DBURL   string `json:"dbUrl"`
@@ -74,12 +73,12 @@ func (a *app) Init() error {
 
 	listeners := []lib.Listener{
 		lib.Listener{
-			Topic: topics.CreateUser,
-			Func:  a.createUser,
+			Topic: topics.CreateProject,
+			Func:  a.createProject,
 		},
 		lib.Listener{
-			Topic: topics.VerifyUser,
-			Func:  a.verifyUser,
+			Topic: topics.UserProjects,
+			Func:  a.userProjects,
 		},
 	}
 
@@ -90,25 +89,6 @@ func (a *app) Init() error {
 	}
 
 	log.Println("registering to event-bus complete")
-
-	db, err := a.db.GetMongoSession()
-	if err != nil {
-		a.Close()
-		return err
-	}
-
-	defer db.Close()
-
-	collection := db.DB("").C(collectionName)
-	if err := collection.EnsureIndex(mgo.Index{
-		Key:        []string{"email"},
-		Unique:     true,
-		DropDups:   true,
-		Background: false,
-	}); err != nil {
-		return err
-	}
-
 	log.Println("init complete")
 
 	return nil

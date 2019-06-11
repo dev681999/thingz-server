@@ -86,3 +86,9 @@ func (a *app) register(c echo.Context) error {
 		"msg": "ok",
 	})
 }
+
+func getUserFromContext(c echo.Context) jwt.MapClaims {
+	user := c.Get("user").(*jwt.Token)
+	claims := user.Claims.(jwt.MapClaims)
+	return claims
+}

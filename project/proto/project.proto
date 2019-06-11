@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package proto;
+
+message Project {
+  // @inject_tag: bson:"_id"
+  string id = 1;
+  string owner = 2;
+  string name = 3;
+  string description = 4;
+}
+
+message CreateProjectRequest { Project project = 1; }
+
+message CreateProjectResponse {
+  bool success = 1;
+  string error = 2;
+  string id = 3;
+}
+
+message UserProjectsRequest { string owner = 1; }
+
+message UserProjectsResponse {
+  bool success = 1;
+  string error = 2;
+  repeated Project projects = 3;
+}
+
+message GetProjectRequest {
+  string id = 1;
+  string owner = 2;
+}
+
+message GetProjectResponse {
+  bool success = 1;
+  string error = 2;
+  Project project = 3;
+}
+
+message DeleteProjectRequest {
+  string id = 1;
+  string owner = 2;
+}
+
+message DeleteProjectResponse {
+  bool success = 1;
+  string error = 2;
+}
+
+message UpdateProjectRequest {
+  string id = 1;
+  string owner = 2;
+  string name = 3;
+  string description = 4;
+}
+
+message UpdateProjectResponse {
+  bool success = 1;
+  string error = 2;
+}

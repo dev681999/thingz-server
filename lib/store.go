@@ -8,6 +8,9 @@ import (
 	bson "github.com/globalsign/mgo/bson"
 )
 
+// M is a convenient alias for a map[string]interface{} map
+type M bson.M
+
 func init() {
 	bson.SetJSONTagFallback(true)
 }
