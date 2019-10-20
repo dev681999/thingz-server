@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package appproto;
+
+enum Unit {
+  BOOL = 0;
+  NUMBER = 1;
+  STRING = 2;
+  DATA = 3;
+}
+
+message Channel {
+  // @inject_tag: bson:"_id"
+  string id = 1;
+  string thing = 2;
+  string name = 3;
+  double floatValue = 4;
+  string stringValue = 5;
+  bool boolValue = 6;
+  string dataValue = 7;
+  Unit unit = 8;
+  int32 type = 9;
+  bool isSensor = 10;
+}
+
+message ThingUpdate {
+  string thing = 1;
+  repeated Channel channels = 2;
+}
+
+message SendThingUpdateRequest { ThingUpdate update = 1; }
+
+message SendThingUpdateResponse {
+  bool success = 1;
+  string error = 2;
+}

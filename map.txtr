@@ -1,0 +1,24 @@
+1. Vibration
+2. Soil Moisture
+3. Alcohol
+4. Gas
+5. Potentiometer
+6. valve
+7. motor
+8. led
+
+{
+    "_id" : "3",
+    "name" : "Alcohol Sensor",
+    "key" : "1234",
+    "project" : "",
+    "channels" : [ 
+        {
+            "_id" : "sensor",
+            "name" : "sensor",
+            "unit" : 1,
+            "isSensor" : true,
+            "floatValue" : 0.0
+        }
+    ]
+}

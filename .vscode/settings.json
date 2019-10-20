@@ -1,3 +1,22 @@
 {
-    "go.useLanguageServer": true
+    "go.useLanguageServer": true,
+    "go.alternateTools": {
+        "go-langserver": "gopls"
+    },
+    "go.languageServerExperimentalFeatures": {
+        "diagnostics": false, // for build and vet errors as you type
+        "findReferences": true, // for finding in-package references
+        "format": true,
+        "autoComplete": true,
+    },
+    "[go]": {
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": true
+        }
+    },
+    /* "gopls": {
+        "usePlaceholders": true // add parameter placeholders when completing a function
+    }, */
+    "files.eol": "\n", // formatting only supports LF line endings
 }

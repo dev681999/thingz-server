@@ -4,6 +4,8 @@ import (
 	"log"
 	"thingz-server/lib"
 	proto "thingz-server/project/proto"
+
+	"github.com/globalsign/mgo/bson"
 )
 
 func (a *app) createProject(_, reply string, req *proto.CreateProjectRequest) {
@@ -44,6 +46,29 @@ func (a *app) userProjects(_, reply string, req *proto.UserProjectsRequest) {
 	} else {
 		resp.Success = true
 		resp.Projects = projects
+	}
+
+	log.Printf("Request: %+v, Resposne: %+v", req, resp)
+	if reply != "" {
+		a.eb.SendMessage(reply, resp)
+	}
+}
+
+func (a *app) deleteProject(_, reply string, req *proto.DeleteProjectRequest) {
+	log.Printf("create req: %+v", req)
+	resp := &proto.DeleteProjectResponse{}
+	db, err := a.db.GetMongoSession()
+	if err == nil {
+		defer db.Close()
+		_, err = db.DB("").C(collectionName).RemoveAll(bson.M{
+			"_id": req.Id,
+		})
+	}
+	if err != nil {
+		resp.Success = false
+		resp.Error = err.Error()
+	} else {
+		resp.Success = true
 	}
 
 	log.Printf("Request: %+v, Resposne: %+v", req, resp)

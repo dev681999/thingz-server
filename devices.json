@@ -1,0 +1,546 @@
+[
+    {
+        "_id": "SENALCO0001",
+        "name": "Alcohol Detector",
+        "key": "1234",
+        "project": "",
+        "type": 1,
+        "channels": [
+            {
+                "_id": "sensor",
+                "name": "sensor",
+                "unit": 1,
+                "isSensor": true,
+                "floatValue": 0
+            }
+        ]
+    },
+    {
+        "_id": "SENACCL0001",
+        "name": "Accelerometer",
+        "key": "1234",
+        "project": "",
+        "type": 2,
+        "channels": [
+            {
+                "_id": "sensor",
+                "name": "sensor",
+                "unit": 1,
+                "isSensor": true,
+                "floatValue": 0
+            }
+        ]
+    },
+    {
+        "_id": "SENCURR0001",
+        "name": "Current meter",
+        "key": "1234",
+        "project": "",
+        "type": 3,
+        "channels": [
+            {
+                "_id": "sensor",
+                "name": "sensor",
+                "unit": 1,
+                "isSensor": true,
+                "floatValue": 0
+            }
+        ]
+    },
+    {
+        "_id": "SENSDHT0001",
+        "name": "Temprature and humidity",
+        "key": "1234",
+        "project": "",
+        "type": 4,
+        "channels": [
+            {
+                "_id": "sensor",
+                "name": "sensor",
+                "unit": 1,
+                "isSensor": true,
+                "floatValue": 0
+            }
+        ]
+    },
+    {
+        "_id": "SENRFID0001",
+        "name": "EM- 18 Rfid",
+        "key": "1234",
+        "project": "",
+        "type": 5,
+        "channels": [
+            {
+                "_id": "sensor",
+                "name": "sensor",
+                "unit": 1,
+                "isSensor": true,
+                "floatValue": 0
+            }
+        ]
+    },
+    {
+        "_id": "SENFLME0001",
+        "name": "Flame Detector",
+        "key": "1234",
+        "project": "",
+        "type": 6,
+        "channels": [
+            {
+                "_id": "sensor",
+                "name": "sensor",
+                "unit": 1,
+                "isSensor": true,
+                "floatValue": 0
+            }
+        ]
+    },
+    {
+        "_id": "SENGYRO0001",
+        "name": "Gyroscope",
+        "key": "1234",
+        "project": "",
+        "type": 7,
+        "channels": [
+            {
+                "_id": "sensor",
+                "name": "sensor",
+                "unit": 1,
+                "isSensor": true,
+                "floatValue": 0
+            }
+        ]
+    },
+    {
+        "_id": "SENUGPS0001",
+        "name": "GPS",
+        "key": "1234",
+        "project": "",
+        "type": 8,
+        "channels": [
+            {
+                "_id": "sensor",
+                "name": "sensor",
+                "unit": 1,
+                "isSensor": true,
+                "floatValue": 0
+            }
+        ]
+    },
+    {
+        "_id": "SENIRPRX0001",
+        "name": "Infrared Proximity",
+        "key": "1234",
+        "project": "",
+        "type": 9,
+        "channels": [
+            {
+                "_id": "sensor",
+                "name": "sensor",
+                "unit": 1,
+                "isSensor": true,
+                "floatValue": 0
+            }
+        ]
+    },
+    {
+        "_id": "SENIMSW0001",
+        "name": "Impact switch",
+        "key": "1234",
+        "project": "",
+        "type": 10,
+        "channels": [
+            {
+                "_id": "sensor",
+                "name": "sensor",
+                "unit": 1,
+                "isSensor": true,
+                "floatValue": 0
+            }
+        ]
+    },
+    {
+        "_id": "SENRLDR0001",
+        "name": "LDR",
+        "key": "1234",
+        "project": "",
+        "type": 11,
+        "channels": [
+            {
+                "_id": "sensor",
+                "name": "sensor",
+                "unit": 1,
+                "isSensor": true,
+                "floatValue": 0
+            }
+        ]
+    },
+    {
+        "_id": "SENDS180001",
+        "name": "Liquid temperature",
+        "key": "1234",
+        "project": "",
+        "type": 12,
+        "channels": [
+            {
+                "_id": "sensor",
+                "name": "sensor",
+                "unit": 1,
+                "isSensor": true,
+                "floatValue": 0
+            }
+        ]
+    },
+    {
+        "_id": "SENSMIC0001",
+        "name": "Mic",
+        "key": "1234",
+        "project": "",
+        "type": 13,
+        "channels": [
+            {
+                "_id": "sensor",
+                "name": "sensor",
+                "unit": 1,
+                "isSensor": true,
+                "floatValue": 0
+            }
+        ]
+    },
+    {
+        "_id": "SENSLMS0001",
+        "name": "Soil Moisture Proportion",
+        "key": "1234",
+        "project": "",
+        "type": 14,
+        "channels": [
+            {
+                "_id": "sensor",
+                "name": "sensor",
+                "unit": 1,
+                "isSensor": true,
+                "floatValue": 0
+            }
+        ]
+    },
+    {
+        "_id": "SENSPIR0001",
+        "name": "PIR",
+        "key": "1234",
+        "project": "",
+        "type": 15,
+        "channels": [
+            {
+                "_id": "sensor",
+                "name": "sensor",
+                "unit": 1,
+                "isSensor": true,
+                "floatValue": 0
+            }
+        ]
+    },
+    {
+        "_id": "SENSPOT0001",
+        "name": "Potentiometer",
+        "key": "1234",
+        "project": "",
+        "type": 16,
+        "channels": [
+            {
+                "_id": "sensor",
+                "name": "sensor",
+                "unit": 1,
+                "isSensor": true,
+                "floatValue": 0
+            }
+        ]
+    },
+    {
+        "_id": "SENPRES0001",
+        "name": "Pressure sense",
+        "key": "1234",
+        "project": "",
+        "type": 17,
+        "channels": [
+            {
+                "_id": "sensor",
+                "name": "sensor",
+                "unit": 1,
+                "isSensor": true,
+                "floatValue": 0
+            }
+        ]
+    },
+    {
+        "_id": "SENSPH0001",
+        "name": "PH SENSOR",
+        "key": "1234",
+        "project": "",
+        "type": 18,
+        "channels": [
+            {
+                "_id": "sensor",
+                "name": "sensor",
+                "unit": 1,
+                "isSensor": true,
+                "floatValue": 0
+            }
+        ]
+    },
+    {
+        "_id": "SENPUSH0001",
+        "name": "Push Button",
+        "key": "1234",
+        "project": "",
+        "type": 19,
+        "channels": [
+            {
+                "_id": "sensor",
+                "name": "sensor",
+                "unit": 0,
+                "isSensor": true,
+                "boolValue": false
+            }
+        ]
+    },
+    {
+        "_id": "SENSMKE0001",
+        "name": "Smoke detector",
+        "key": "1234",
+        "project": "",
+        "type": 20,
+        "channels": [
+            {
+                "_id": "sensor",
+                "name": "sensor",
+                "unit": 1,
+                "isSensor": true,
+                "floatValue": 0
+            }
+        ]
+    },
+    {
+        "_id": "SENSWBU0001",
+        "name": "Switch Button",
+        "key": "1234",
+        "project": "",
+        "type": 21,
+        "channels": [
+            {
+                "_id": "sensor",
+                "name": "sensor",
+                "unit": 0,
+                "isSensor": true,
+                "boolValue": false
+            }
+        ]
+    },
+    {
+        "_id": "SENTHBU0001",
+        "name": "Touch Button",
+        "key": "1234",
+        "project": "",
+        "type": 22,
+        "channels": [
+            {
+                "_id": "sensor",
+                "name": "sensor",
+                "unit": 0,
+                "isSensor": true,
+                "boolValue": false
+            }
+        ]
+    },
+    {
+        "_id": "SENULTR0001",
+        "name": "Ultrasonic",
+        "key": "1234",
+        "project": "",
+        "type": 23,
+        "channels": [
+            {
+                "_id": "sensor",
+                "name": "sensor",
+                "unit": 1,
+                "isSensor": true,
+                "floatValue": 0
+            }
+        ]
+    },
+    {
+        "_id": "SENVIBR0001",
+        "name": "Vibration",
+        "key": "1234",
+        "project": "",
+        "type": 24,
+        "channels": [
+            {
+                "_id": "sensor",
+                "name": "sensor",
+                "unit": 1,
+                "isSensor": true,
+                "floatValue": 0
+            }
+        ]
+    },
+    {
+        "_id": "SENVOLT0001",
+        "name": "Voltmeter",
+        "key": "1234",
+        "project": "",
+        "type": 25,
+        "channels": [
+            {
+                "_id": "sensor",
+                "name": "sensor",
+                "unit": 1,
+                "isSensor": true,
+                "floatValue": 0
+            }
+        ]
+    },
+    {
+        "_id": "SENIRBL0001",
+        "name": "IR Blaster",
+        "key": "1234",
+        "project": "",
+        "type": 26,
+        "channels": [
+            {
+                "_id": "sensor",
+                "name": "sensor",
+                "unit": 1,
+                "isSensor": true,
+                "floatValue": 0
+            }
+        ]
+    },
+    {
+        "_id": "SENJOYS0001",
+        "name": "Joystick",
+        "key": "1234",
+        "project": "",
+        "type": 27,
+        "channels": [
+            {
+                "_id": "sensor",
+                "name": "sensor",
+                "unit": 1,
+                "isSensor": true,
+                "floatValue": 0
+            }
+        ]
+    },
+    {
+        "_id": "SENHRTB0001",
+        "name": "Heartbeat",
+        "key": "1234",
+        "project": "",
+        "type": 28,
+        "channels": [
+            {
+                "_id": "sensor",
+                "name": "sensor",
+                "unit": 1,
+                "isSensor": true,
+                "floatValue": 0
+            }
+        ]
+    },
+    {
+        "_id": "ACTELVA0001",
+        "name": "Electronic Valve",
+        "key": "1234",
+        "project": "",
+        "type": 29,
+        "channels": [
+            {
+                "_id": "value",
+                "name": "Status",
+                "unit": 0,
+                "isSensor": false,
+                "boolValue": true
+            }
+        ]
+    },
+    {
+        "_id": "ACTSVMO0001",
+        "name": "Servo Motor",
+        "key": "1234",
+        "project": "",
+        "type": 30,
+        "channels": [
+            {
+                "_id": "value",
+                "name": "Status",
+                "unit": 0,
+                "isSensor": false,
+                "boolValue": true
+            }
+        ]
+    },
+    {
+        "_id": "ACTSTMO0001",
+        "name": "Stepper Motor",
+        "key": "1234",
+        "project": "",
+        "type": 31,
+        "channels": [
+            {
+                "_id": "value",
+                "name": "Status",
+                "unit": 0,
+                "isSensor": false,
+                "boolValue": true
+            }
+        ]
+    },
+    {
+        "_id": "ACTRLSW0001",
+        "name": "Relay switch",
+        "key": "1234",
+        "project": "",
+        "type": 32,
+        "channels": [
+            {
+                "_id": "value",
+                "name": "Status",
+                "unit": 0,
+                "isSensor": false,
+                "boolValue": true
+            }
+        ]
+    },
+    {
+        "_id": "ACTDLED0001",
+        "name": "LED",
+        "key": "1234",
+        "project": "",
+        "type": 33,
+        "channels": [
+            {
+                "_id": "value",
+                "name": "Status",
+                "unit": 0,
+                "isSensor": false,
+                "boolValue": true
+            }
+        ]
+    },
+    {
+        "_id": "ACTBUZZ0001",
+        "name": "Buzzer",
+        "key": "1234",
+        "project": "",
+        "type": 34,
+        "channels": [
+            {
+                "_id": "value",
+                "name": "Status",
+                "unit": 0,
+                "isSensor": false,
+                "boolValue": true
+            }
+        ]
+    }
+]

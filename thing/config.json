@@ -2,6 +2,7 @@
 	"dbUrl": "localhost:27017",
 	"dbUser": "",
 	"dbPass": "",
-    "dbName": "thingz-test",
+	"dbName": "thingz-test",
+	"cacheUrl": "localhost:6379",
     "natsUrl": ""
 }

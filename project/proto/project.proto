@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package proto;
+package projectproto;
 
 message Project {
   // @inject_tag: bson:"_id"
@@ -8,6 +8,7 @@ message Project {
   string owner = 2;
   string name = 3;
   string description = 4;
+  int32 image = 5;
 }
 
 message CreateProjectRequest { Project project = 1; }

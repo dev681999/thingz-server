@@ -80,6 +80,10 @@ func (a *app) Init() error {
 			Topic: topics.UserProjects,
 			Func:  a.userProjects,
 		},
+		lib.Listener{
+			Topic: topics.DeleteProject,
+			Func:  a.deleteProject,
+		},
 	}
 
 	err = a.eb.RegisterListeners(listeners)

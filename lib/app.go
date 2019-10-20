@@ -15,7 +15,6 @@ const (
 type app interface {
 	Init() error
 	Close()
-	Test() string
 }
 
 // ConfigFromFile return a config from a JSON file

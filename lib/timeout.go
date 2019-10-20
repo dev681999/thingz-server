@@ -4,5 +4,8 @@ import (
 	"time"
 )
 
-// DefaultTImeout is a 5 second default timeout
+// DefaultTimeout is a 5 second default timeout
 const DefaultTimeout = time.Second * 5
+
+// TokenTimeout :
+const TokenTimeout = time.Hour * 300

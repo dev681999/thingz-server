@@ -1,0 +1,81 @@
+syntax = "proto3";
+
+package mqttproto;
+
+message Mqtt {
+  // @inject_tag: bson:"_id"
+  string id = 1;
+  string owner = 2;
+  string name = 3;
+  string description = 4;
+}
+
+message Channel {
+  string id = 1;
+  double floatValue = 2;
+  string stringValue = 3;
+  bool boolValue = 4;
+  string dataValue = 5;
+  int32 unit = 6;
+}
+
+message Thing {
+  string id = 1;
+  repeated Channel channels = 2;
+}
+
+message UpdateThingRequest { Thing thing = 1; }
+
+message UpdateThingResponse {
+  bool success = 1;
+  string error = 2;
+}
+
+message CreateMqttRequest { Mqtt mqtt = 1; }
+
+message CreateMqttResponse {
+  bool success = 1;
+  string error = 2;
+  string id = 3;
+}
+
+message UserMqttsRequest { string owner = 1; }
+
+message UserMqttsResponse {
+  bool success = 1;
+  string error = 2;
+  repeated Mqtt mqtts = 3;
+}
+
+message GetMqttRequest {
+  string id = 1;
+  string owner = 2;
+}
+
+message GetMqttResponse {
+  bool success = 1;
+  string error = 2;
+  Mqtt mqtt = 3;
+}
+
+message DeleteMqttRequest {
+  string id = 1;
+  string owner = 2;
+}
+
+message DeleteMqttResponse {
+  bool success = 1;
+  string error = 2;
+}
+
+message UpdateMqttRequest {
+  string id = 1;
+  string owner = 2;
+  string name = 3;
+  string description = 4;
+}
+
+message UpdateMqttResponse {
+  bool success = 1;
+  string error = 2;
+}

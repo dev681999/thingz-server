@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+package ruleproto;
+
+enum Operation {
+  EQUAL = 0;
+  NOTEQUAL = 1;
+  LESSTHAN = 2;
+  LESSTHANEQUAL = 3;
+  GREATERTHAN = 4;
+  GREATERTHANEQUAL = 5;
+}
+
+enum TriggerType {
+  COMMAND = 0;
+}
+
+message Channel {
+  string id = 1;
+  double floatValue = 2;
+  string stringValue = 3;
+  bool boolValue = 4;
+  string dataValue = 5;
+  int32 unit = 6;
+}
+
+message TriggerCommand {
+  string thing = 1;
+  repeated Channel channels = 2;
+}
+
+message Rule {
+  // @inject_tag: bson:"_id"
+  string id = 1;
+  string thing = 2;
+  string project = 3;
+  double floatValue = 4;
+  string stringValue = 5;
+  bool boolValue = 6;
+  string dataValue = 7;
+  int32 unit = 8;
+  Operation operation = 9;
+  TriggerType triggerType = 10;
+  repeated TriggerCommand triggerCommands = 11;
+  string channel = 12;
+}
+
+message CreateRuleRequest { Rule rule = 1; }
+
+message CreateRuleResponse {
+  bool success = 1;
+  string error = 2;
+  string id = 3;
+}
+
+message DeleteRuleRequest { string rule = 1; }
+
+message DeleteRuleResponse {
+  bool success = 1;
+  string error = 2;
+}
+
+message ProjectRulesRequest { string project = 1; }
+
+message ProjectRulesResponse {
+  bool success = 1;
+  string error = 2;
+  repeated Rule rules = 3;
+}
+
+message CheckThingRuleRequest { Rule update = 1; }
+
+message CheckThingRuleResponse {
+  bool success = 1;
+  string error = 2;
+}

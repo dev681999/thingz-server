@@ -6,24 +6,27 @@ import (
 
 	lib "github.com/dev681999/helperlibs"
 
+	"github.com/go-redis/redis"
 	nats "github.com/nats-io/nats.go"
 )
 
 var collectionName = "things"
 
 type appConfig struct {
-	DBURL   string `json:"dbUrl"`
-	DBUser  string `json:"dbUser"`
-	DBPass  string `json:"dbPass"`
-	DBName  string `json:"dbName"`
-	NATSUrl string `json:"natsUrl"`
+	DBURL    string `json:"dbUrl"`
+	DBUser   string `json:"dbUser"`
+	DBPass   string `json:"dbPass"`
+	DBName   string `json:"dbName"`
+	NATSUrl  string `json:"natsUrl"`
+	CacheURL string `json:"cacheUrl"`
 }
 
 type app struct {
-	eb *lib.EventBus
-	db *lib.Store
-	c  *appConfig
-	h  *lib.Hash
+	eb          *lib.EventBus
+	db          *lib.Store
+	c           *appConfig
+	h           *lib.Hash
+	cacheClient *redis.Client
 }
 
 func newApp(config *appConfig) *app {
@@ -61,6 +64,23 @@ func (a *app) Init() error {
 	}
 
 	log.Println("connecting db success")
+	log.Println("connecting cache")
+
+	cacheClient := redis.NewClient(&redis.Options{
+		Addr:     a.c.CacheURL,
+		Password: "", // no password set
+		DB:       0,  // use default DB
+	})
+
+	_, err = cacheClient.Ping().Result()
+	if err != nil {
+		a.Close()
+		return err
+	}
+
+	a.cacheClient = cacheClient
+
+	log.Println("connecting db success")
 	log.Println("connecting nats")
 
 	err = a.eb.Connect(lib.ProtobufEnc)
@@ -78,8 +98,48 @@ func (a *app) Init() error {
 			Func:  a.createThing,
 		},
 		lib.Listener{
+			Topic: topics.GetThing,
+			Func:  a.getThing,
+		},
+		lib.Listener{
 			Topic: topics.ProjectThings,
 			Func:  a.projectThings,
+		},
+		lib.Listener{
+			Topic: topics.ProjectDelete,
+			Func:  a.projectDelete,
+		},
+		lib.Listener{
+			Topic: topics.DeleteThing,
+			Func:  a.deleteThing,
+		},
+		/* lib.Listener{
+			Topic: topics.UpdateChannel,
+			Func:  a.updateChannel,
+		}, */
+		lib.Listener{
+			Topic: topics.UpdateChannels,
+			Func:  a.updateChannels,
+		},
+		lib.Listener{
+			Topic: topics.UpdateThingsChannels,
+			Func:  a.updateThingsChannels,
+		},
+		lib.Listener{
+			Topic: topics.GenerateAssignThing,
+			Func:  a.generateAssignThing,
+		},
+		lib.Listener{
+			Topic: topics.AssignThing,
+			Func:  a.assignThing,
+		},
+		lib.Listener{
+			Topic: topics.DeassignThing,
+			Func:  a.deassignThing,
+		},
+		lib.Listener{
+			Topic: topics.ThingSeries,
+			Func:  a.thingSeries,
 		},
 	}
 
@@ -91,6 +151,37 @@ func (a *app) Init() error {
 
 	log.Println("registering to event-bus complete")
 	log.Println("init complete")
+
+	/* go func() {
+		a.updateChannels("", "", &proto.UpdateChannelsRequest{
+			Thing: "2",
+			Channels: []*proto.Channel{{
+				Id:         "sensor",
+				FloatValue: 10.0,
+				Unit:       1,
+			}},
+		})
+	}() */
+
+	/* go func(a *app) {
+		resp := &mqttProto.UpdateThingResponse{}
+		err := a.eb.RequestMessage(mqttTopics.UpdateThing, &mqttProto.UpdateThingRequest{
+			Thing: &mqttProto.Thing{
+				Id: "test",
+				Channels: []*mqttProto.Channel{{
+					Id:          "1",
+					Unit:        int32(proto.Unit_STRING),
+					StringValue: "TEST",
+				}},
+			},
+		}, resp, lib.DefaultTimeout)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+
+		log.Println(resp)
+	}(a) */
 
 	return nil
 }
@@ -104,6 +195,13 @@ func (a *app) Close() {
 	}
 
 	log.Println("closed db connection")
+	log.Println("closing db connection")
+
+	if a.cacheClient != nil {
+		a.cacheClient.Close()
+	}
+
+	log.Println("closed db connection")
 	log.Println("closing nats connection")
 
 	if a.eb != nil {
@@ -112,8 +210,4 @@ func (a *app) Close() {
 
 	log.Println("closed nats connection")
 	log.Println("close complete")
-}
-
-func (a *app) Test() string {
-	return "user-srv"
 }

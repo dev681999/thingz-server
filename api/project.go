@@ -60,8 +60,34 @@ func (a *app) userProjects(c echo.Context) error {
 	if !res.GetSuccess() {
 		return a.makeError(c, http.StatusUnauthorized, errors.New(res.GetError()))
 	}
+
+	if res.Projects == nil {
+		res.Projects = []*projectP.Project{}
+	}
+
 	return a.sendSucess(c, echo.Map{
 		"msg":      "ok",
 		"projects": res.GetProjects(),
 	})
+}
+
+func (a *app) deleteProject(c echo.Context) error {
+	project := c.Param("id")
+	req := &projectP.DeleteProjectRequest{
+		Id:    project,
+		Owner: getUserFromContext(c)["id"].(string),
+	}
+	res := &projectP.DeleteProjectResponse{}
+
+	err := a.eb.RequestMessage(projectT.DeleteProject, req, res, lib.DefaultTimeout)
+	if err != nil {
+		log.Printf("error: %+v", err)
+		return a.makeError(c, http.StatusInternalServerError, err)
+	}
+
+	if !res.GetSuccess() {
+		return a.makeError(c, http.StatusUnauthorized, errors.New(res.GetError()))
+	}
+
+	return a.deleteProjectThings(c)
 }

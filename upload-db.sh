@@ -1,0 +1,1 @@
+sudo scp -r -i server_key.pem exports/* admin@ec2-54-191-142-124.us-west-2.compute.amazonaws.com:/var/thingz
