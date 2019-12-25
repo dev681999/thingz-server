@@ -14,4 +14,7 @@ const (
 	AssignThing          = Base + "AssignThing"
 	DeassignThing        = Base + "DeassignThing"
 	ThingSeries          = Base + "ThingSeries"
+	GetThingsByIDs       = Base + "GetThingsByIDs"
+	UpdateThingConfig    = Base + "UpdateThingConfig"
+	GetThingTypes        = Base + "GetThingTypes"
 )

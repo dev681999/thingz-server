@@ -2,13 +2,14 @@ package main
 
 import (
 	"encoding/json"
-	"log"
 	"reflect"
 	"thingz-server/lib"
 	proto "thingz-server/mqtt/proto"
 	topics "thingz-server/mqtt/topics"
 	thingProto "thingz-server/thing/proto"
 	thingTopics "thingz-server/thing/topics"
+
+	log "github.com/sirupsen/logrus"
 )
 
 type channel struct {

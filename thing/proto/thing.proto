@@ -30,6 +30,8 @@ message Thing {
   string project = 3;
   string name = 4;
   repeated Channel channels = 5;
+  int32 type = 6;
+  string config = 7;
 }
 
 message Series {
@@ -49,6 +51,7 @@ message CreateThingResponse {
   bool success = 1;
   string error = 2;
   string id = 3;
+  repeated string channels = 4;
 }
 
 message GetThingRequest { string thing = 1; }
@@ -141,10 +144,39 @@ message DeassignThingResponse {
   string error = 2;
 }
 
-message ThingSeriesRequest { string id = 1; }
+message ThingSeriesRequest {
+  string id = 1;
+  string channel = 2;
+}
 
 message ThingSeriesResponse {
   bool success = 1;
   string error = 2;
   repeated Series values = 3;
+}
+
+message GetThingsByIDsRequest { repeated string ids = 1; }
+
+message GetThingsByIDsResponse {
+  bool success = 1;
+  string error = 2;
+  repeated Thing things = 3;
+}
+
+message UpdateThingConfigRequest {
+  string thing = 1;
+  string config = 2;
+}
+
+message UpdateThingConfigResponse {
+  bool success = 1;
+  string error = 2;
+}
+
+message GetThingTypesRequest {}
+
+message GetThingTypesResponse {
+  bool success = 1;
+  string error = 2;
+  repeated string types = 3;
 }

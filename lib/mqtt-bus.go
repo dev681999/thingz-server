@@ -9,6 +9,7 @@ import (
 	"github.com/golang/protobuf/proto"
 )
 
+// Msg is Mesasge structure
 type Msg struct {
 	Topic string
 	Msg   []byte

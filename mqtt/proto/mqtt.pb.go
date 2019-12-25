@@ -31,16 +31,9 @@ type Mqtt struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func MqttFromBytes(data []byte) (*Mqtt, error) {
-	t := &Mqtt{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *Mqtt) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *Mqtt) Reset()                   { *m = Mqtt{} }
-func (m *Mqtt) String() string           { return proto.CompactTextString(m) }
-func (*Mqtt) ProtoMessage()              {}
+func (m *Mqtt) Reset()         { *m = Mqtt{} }
+func (m *Mqtt) String() string { return proto.CompactTextString(m) }
+func (*Mqtt) ProtoMessage()    {}
 func (*Mqtt) Descriptor() ([]byte, []int) {
 	return fileDescriptor_35327d90702720f6, []int{0}
 }
@@ -103,16 +96,9 @@ type Channel struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func ChannelFromBytes(data []byte) (*Channel, error) {
-	t := &Channel{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *Channel) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *Channel) Reset()                   { *m = Channel{} }
-func (m *Channel) String() string           { return proto.CompactTextString(m) }
-func (*Channel) ProtoMessage()              {}
+func (m *Channel) Reset()         { *m = Channel{} }
+func (m *Channel) String() string { return proto.CompactTextString(m) }
+func (*Channel) ProtoMessage()    {}
 func (*Channel) Descriptor() ([]byte, []int) {
 	return fileDescriptor_35327d90702720f6, []int{1}
 }
@@ -185,16 +171,9 @@ type Thing struct {
 	XXX_sizecache        int32      `json:"-"`
 }
 
-func ThingFromBytes(data []byte) (*Thing, error) {
-	t := &Thing{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *Thing) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *Thing) Reset()                   { *m = Thing{} }
-func (m *Thing) String() string           { return proto.CompactTextString(m) }
-func (*Thing) ProtoMessage()              {}
+func (m *Thing) Reset()         { *m = Thing{} }
+func (m *Thing) String() string { return proto.CompactTextString(m) }
+func (*Thing) ProtoMessage()    {}
 func (*Thing) Descriptor() ([]byte, []int) {
 	return fileDescriptor_35327d90702720f6, []int{2}
 }
@@ -238,16 +217,9 @@ type UpdateThingRequest struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func UpdateThingRequestFromBytes(data []byte) (*UpdateThingRequest, error) {
-	t := &UpdateThingRequest{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *UpdateThingRequest) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *UpdateThingRequest) Reset()                   { *m = UpdateThingRequest{} }
-func (m *UpdateThingRequest) String() string           { return proto.CompactTextString(m) }
-func (*UpdateThingRequest) ProtoMessage()              {}
+func (m *UpdateThingRequest) Reset()         { *m = UpdateThingRequest{} }
+func (m *UpdateThingRequest) String() string { return proto.CompactTextString(m) }
+func (*UpdateThingRequest) ProtoMessage()    {}
 func (*UpdateThingRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_35327d90702720f6, []int{3}
 }
@@ -285,16 +257,9 @@ type UpdateThingResponse struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func UpdateThingResponseFromBytes(data []byte) (*UpdateThingResponse, error) {
-	t := &UpdateThingResponse{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *UpdateThingResponse) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *UpdateThingResponse) Reset()                   { *m = UpdateThingResponse{} }
-func (m *UpdateThingResponse) String() string           { return proto.CompactTextString(m) }
-func (*UpdateThingResponse) ProtoMessage()              {}
+func (m *UpdateThingResponse) Reset()         { *m = UpdateThingResponse{} }
+func (m *UpdateThingResponse) String() string { return proto.CompactTextString(m) }
+func (*UpdateThingResponse) ProtoMessage()    {}
 func (*UpdateThingResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_35327d90702720f6, []int{4}
 }
@@ -338,16 +303,9 @@ type CreateMqttRequest struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func CreateMqttRequestFromBytes(data []byte) (*CreateMqttRequest, error) {
-	t := &CreateMqttRequest{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *CreateMqttRequest) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *CreateMqttRequest) Reset()                   { *m = CreateMqttRequest{} }
-func (m *CreateMqttRequest) String() string           { return proto.CompactTextString(m) }
-func (*CreateMqttRequest) ProtoMessage()              {}
+func (m *CreateMqttRequest) Reset()         { *m = CreateMqttRequest{} }
+func (m *CreateMqttRequest) String() string { return proto.CompactTextString(m) }
+func (*CreateMqttRequest) ProtoMessage()    {}
 func (*CreateMqttRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_35327d90702720f6, []int{5}
 }
@@ -386,16 +344,9 @@ type CreateMqttResponse struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func CreateMqttResponseFromBytes(data []byte) (*CreateMqttResponse, error) {
-	t := &CreateMqttResponse{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *CreateMqttResponse) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *CreateMqttResponse) Reset()                   { *m = CreateMqttResponse{} }
-func (m *CreateMqttResponse) String() string           { return proto.CompactTextString(m) }
-func (*CreateMqttResponse) ProtoMessage()              {}
+func (m *CreateMqttResponse) Reset()         { *m = CreateMqttResponse{} }
+func (m *CreateMqttResponse) String() string { return proto.CompactTextString(m) }
+func (*CreateMqttResponse) ProtoMessage()    {}
 func (*CreateMqttResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_35327d90702720f6, []int{6}
 }
@@ -446,16 +397,9 @@ type UserMqttsRequest struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func UserMqttsRequestFromBytes(data []byte) (*UserMqttsRequest, error) {
-	t := &UserMqttsRequest{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *UserMqttsRequest) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *UserMqttsRequest) Reset()                   { *m = UserMqttsRequest{} }
-func (m *UserMqttsRequest) String() string           { return proto.CompactTextString(m) }
-func (*UserMqttsRequest) ProtoMessage()              {}
+func (m *UserMqttsRequest) Reset()         { *m = UserMqttsRequest{} }
+func (m *UserMqttsRequest) String() string { return proto.CompactTextString(m) }
+func (*UserMqttsRequest) ProtoMessage()    {}
 func (*UserMqttsRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_35327d90702720f6, []int{7}
 }
@@ -494,16 +438,9 @@ type UserMqttsResponse struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func UserMqttsResponseFromBytes(data []byte) (*UserMqttsResponse, error) {
-	t := &UserMqttsResponse{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *UserMqttsResponse) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *UserMqttsResponse) Reset()                   { *m = UserMqttsResponse{} }
-func (m *UserMqttsResponse) String() string           { return proto.CompactTextString(m) }
-func (*UserMqttsResponse) ProtoMessage()              {}
+func (m *UserMqttsResponse) Reset()         { *m = UserMqttsResponse{} }
+func (m *UserMqttsResponse) String() string { return proto.CompactTextString(m) }
+func (*UserMqttsResponse) ProtoMessage()    {}
 func (*UserMqttsResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_35327d90702720f6, []int{8}
 }
@@ -555,16 +492,9 @@ type GetMqttRequest struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func GetMqttRequestFromBytes(data []byte) (*GetMqttRequest, error) {
-	t := &GetMqttRequest{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *GetMqttRequest) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *GetMqttRequest) Reset()                   { *m = GetMqttRequest{} }
-func (m *GetMqttRequest) String() string           { return proto.CompactTextString(m) }
-func (*GetMqttRequest) ProtoMessage()              {}
+func (m *GetMqttRequest) Reset()         { *m = GetMqttRequest{} }
+func (m *GetMqttRequest) String() string { return proto.CompactTextString(m) }
+func (*GetMqttRequest) ProtoMessage()    {}
 func (*GetMqttRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_35327d90702720f6, []int{9}
 }
@@ -610,16 +540,9 @@ type GetMqttResponse struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func GetMqttResponseFromBytes(data []byte) (*GetMqttResponse, error) {
-	t := &GetMqttResponse{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *GetMqttResponse) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *GetMqttResponse) Reset()                   { *m = GetMqttResponse{} }
-func (m *GetMqttResponse) String() string           { return proto.CompactTextString(m) }
-func (*GetMqttResponse) ProtoMessage()              {}
+func (m *GetMqttResponse) Reset()         { *m = GetMqttResponse{} }
+func (m *GetMqttResponse) String() string { return proto.CompactTextString(m) }
+func (*GetMqttResponse) ProtoMessage()    {}
 func (*GetMqttResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_35327d90702720f6, []int{10}
 }
@@ -671,16 +594,9 @@ type DeleteMqttRequest struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func DeleteMqttRequestFromBytes(data []byte) (*DeleteMqttRequest, error) {
-	t := &DeleteMqttRequest{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *DeleteMqttRequest) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *DeleteMqttRequest) Reset()                   { *m = DeleteMqttRequest{} }
-func (m *DeleteMqttRequest) String() string           { return proto.CompactTextString(m) }
-func (*DeleteMqttRequest) ProtoMessage()              {}
+func (m *DeleteMqttRequest) Reset()         { *m = DeleteMqttRequest{} }
+func (m *DeleteMqttRequest) String() string { return proto.CompactTextString(m) }
+func (*DeleteMqttRequest) ProtoMessage()    {}
 func (*DeleteMqttRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_35327d90702720f6, []int{11}
 }
@@ -725,16 +641,9 @@ type DeleteMqttResponse struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func DeleteMqttResponseFromBytes(data []byte) (*DeleteMqttResponse, error) {
-	t := &DeleteMqttResponse{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *DeleteMqttResponse) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *DeleteMqttResponse) Reset()                   { *m = DeleteMqttResponse{} }
-func (m *DeleteMqttResponse) String() string           { return proto.CompactTextString(m) }
-func (*DeleteMqttResponse) ProtoMessage()              {}
+func (m *DeleteMqttResponse) Reset()         { *m = DeleteMqttResponse{} }
+func (m *DeleteMqttResponse) String() string { return proto.CompactTextString(m) }
+func (*DeleteMqttResponse) ProtoMessage()    {}
 func (*DeleteMqttResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_35327d90702720f6, []int{12}
 }
@@ -781,16 +690,9 @@ type UpdateMqttRequest struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func UpdateMqttRequestFromBytes(data []byte) (*UpdateMqttRequest, error) {
-	t := &UpdateMqttRequest{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *UpdateMqttRequest) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *UpdateMqttRequest) Reset()                   { *m = UpdateMqttRequest{} }
-func (m *UpdateMqttRequest) String() string           { return proto.CompactTextString(m) }
-func (*UpdateMqttRequest) ProtoMessage()              {}
+func (m *UpdateMqttRequest) Reset()         { *m = UpdateMqttRequest{} }
+func (m *UpdateMqttRequest) String() string { return proto.CompactTextString(m) }
+func (*UpdateMqttRequest) ProtoMessage()    {}
 func (*UpdateMqttRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_35327d90702720f6, []int{13}
 }
@@ -849,16 +751,9 @@ type UpdateMqttResponse struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func UpdateMqttResponseFromBytes(data []byte) (*UpdateMqttResponse, error) {
-	t := &UpdateMqttResponse{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *UpdateMqttResponse) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *UpdateMqttResponse) Reset()                   { *m = UpdateMqttResponse{} }
-func (m *UpdateMqttResponse) String() string           { return proto.CompactTextString(m) }
-func (*UpdateMqttResponse) ProtoMessage()              {}
+func (m *UpdateMqttResponse) Reset()         { *m = UpdateMqttResponse{} }
+func (m *UpdateMqttResponse) String() string { return proto.CompactTextString(m) }
+func (*UpdateMqttResponse) ProtoMessage()    {}
 func (*UpdateMqttResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_35327d90702720f6, []int{14}
 }

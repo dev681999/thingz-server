@@ -9,11 +9,11 @@ enum Operation {
   LESSTHANEQUAL = 3;
   GREATERTHAN = 4;
   GREATERTHANEQUAL = 5;
+  AND = 6;
+  OR = 7;
 }
 
-enum TriggerType {
-  COMMAND = 0;
-}
+enum TriggerType { COMMAND = 0; }
 
 message Channel {
   string id = 1;
@@ -29,6 +29,8 @@ message TriggerCommand {
   repeated Channel channels = 2;
 }
 
+message ThingChLink { string uid = 1; }
+
 message Rule {
   // @inject_tag: bson:"_id"
   string id = 1;
@@ -43,9 +45,20 @@ message Rule {
   TriggerType triggerType = 10;
   repeated TriggerCommand triggerCommands = 11;
   string channel = 12;
+  bool val = 13;
+  string vals = 14;
+  repeated Rule rules = 15;
+  ThingChLink thingChLink = 16;
+  bool isRoot = 17;
+  string uid = 18;
+  bool isLeaf = 19;
+  string root = 20;
 }
 
-message CreateRuleRequest { Rule rule = 1; }
+message CreateRuleRequest {
+  Rule rule = 1;
+  string thingsMap = 2;
+}
 
 message CreateRuleResponse {
   bool success = 1;
@@ -71,6 +84,16 @@ message ProjectRulesResponse {
 message CheckThingRuleRequest { Rule update = 1; }
 
 message CheckThingRuleResponse {
+  bool success = 1;
+  string error = 2;
+}
+
+message CreateThingLinkRequest {
+  string thing = 1;
+  repeated string channels = 2;
+}
+
+message CreateThingLinkResponse {
   bool success = 1;
   string error = 2;
 }

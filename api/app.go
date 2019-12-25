@@ -2,10 +2,13 @@ package main
 
 import (
 	"context"
-	"log"
+	"errors"
+	"net/http"
 	"thingz-server/api/topics"
 	"thingz-server/lib"
 	"time"
+
+	log "github.com/sirupsen/logrus"
 
 	nats "github.com/nats-io/nats.go"
 
@@ -29,6 +32,20 @@ type app struct {
 	c           *appConfig
 	e           *echo.Echo
 	eventServer *sse.Server
+}
+
+func (a *app) checkAdmin(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		if c.Request().Header.Get("Authorization") != "admin" {
+			log.Println("not admin")
+			err := errors.New("only admin authorised")
+			return echo.NewHTTPError(http.StatusUnauthorized, echo.Map{
+				"msg": err.Error(),
+			})
+		}
+		log.Println("admin")
+		return next(c)
+	}
 }
 
 func newApp(config *appConfig) *app {
@@ -92,7 +109,10 @@ func (a *app) Init() error {
 	a.e.POST("/assign-thing", a.assignThing)
 	a.e.POST("/assign-thing/", a.assignThing)
 
+	a.e.Static("/pdfs", "./pdfs")
+
 	api := a.e.Group("/api")
+	admin := a.e.Group("/admin", a.checkAdmin)
 
 	api.Use(middleware.JWT([]byte(a.c.JwtSecret)))
 
@@ -144,6 +164,20 @@ func (a *app) Init() error {
 	rule.DELETE("/:id", a.deleteRule)
 	rule.DELETE("/:id/", a.deleteRule)
 
+	rule.GET("/fire", a.fireRule)
+	rule.GET("/fire/", a.fireRule)
+
+	admin.GET("/thing", a.adminGetAllThings)
+	admin.GET("/thing/", a.adminGetAllThings)
+
+	admin.POST("/thing", a.adminCreateThing)
+	admin.POST("/thing/", a.adminCreateThing)
+
+	admin.GET("/thing/types", a.adminGetThingTypes)
+	admin.GET("/thing/types/", a.adminGetThingTypes)
+
+	admin.GET("/thing/pdf", a.adminGetAllThingsPDF)
+	admin.GET("/thing/pdf/", a.adminGetAllThingsPDF)
 	go func() {
 		if err := a.e.Start(a.c.Addr); err != nil {
 			log.Println("HTTP server shutdown")

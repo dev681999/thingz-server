@@ -3,5 +3,6 @@
 	"dbUser": "",
 	"dbPass": "",
     "dbName": "thingz-test",
-    "natsUrl": ""
+	"natsUrl": "",
+	"dgraphUrl": ":9080"	
 }

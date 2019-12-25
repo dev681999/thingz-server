@@ -1,8 +1,9 @@
 package main
 
 import (
-	"log"
 	"thingz-server/thing/topics"
+
+	log "github.com/sirupsen/logrus"
 
 	lib "github.com/dev681999/helperlibs"
 
@@ -10,7 +11,7 @@ import (
 	nats "github.com/nats-io/nats.go"
 )
 
-var collectionName = "things"
+const collectionName = "things"
 
 type appConfig struct {
 	DBURL    string `json:"dbUrl"`
@@ -140,6 +141,18 @@ func (a *app) Init() error {
 		lib.Listener{
 			Topic: topics.ThingSeries,
 			Func:  a.thingSeries,
+		},
+		lib.Listener{
+			Topic: topics.GetThingsByIDs,
+			Func:  a.getThingsByIDs,
+		},
+		lib.Listener{
+			Topic: topics.UpdateThingConfig,
+			Func:  a.updateThingConfig,
+		},
+		lib.Listener{
+			Topic: topics.GetThingTypes,
+			Func:  a.getThingTypes,
 		},
 	}
 

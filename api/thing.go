@@ -3,12 +3,13 @@ package main
 import (
 	"encoding/json"
 	"errors"
-	"log"
 	"net/http"
 	proto "thingz-server/api/proto"
 	"thingz-server/lib"
 	thingP "thingz-server/thing/proto"
 	thingT "thingz-server/thing/topics"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/alexandrevicenzi/go-sse"
 	"github.com/labstack/echo"
@@ -74,7 +75,8 @@ func (a *app) getThing(c echo.Context) error {
 func (a *app) getThingSeries(c echo.Context) error {
 	thing := c.Param("id")
 	req := &thingP.ThingSeriesRequest{
-		Id: thing,
+		Id:      thing,
+		Channel: c.QueryParam("channel"),
 	}
 	res := &thingP.ThingSeriesResponse{}
 
@@ -114,6 +116,8 @@ func (a *app) projectThings(c echo.Context) error {
 	if res.Things == nil {
 		res.Things = []*thingP.Thing{}
 	}
+
+	log.Println("got things", res.GetThings())
 
 	return a.sendSucess(c, echo.Map{
 		"msg":    "ok",

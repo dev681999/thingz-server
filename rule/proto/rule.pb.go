@@ -29,6 +29,8 @@ const (
 	Operation_LESSTHANEQUAL    Operation = 3
 	Operation_GREATERTHAN      Operation = 4
 	Operation_GREATERTHANEQUAL Operation = 5
+	Operation_AND              Operation = 6
+	Operation_OR               Operation = 7
 )
 
 var Operation_name = map[int32]string{
@@ -38,6 +40,8 @@ var Operation_name = map[int32]string{
 	3: "LESSTHANEQUAL",
 	4: "GREATERTHAN",
 	5: "GREATERTHANEQUAL",
+	6: "AND",
+	7: "OR",
 }
 
 var Operation_value = map[string]int32{
@@ -47,6 +51,8 @@ var Operation_value = map[string]int32{
 	"LESSTHANEQUAL":    3,
 	"GREATERTHAN":      4,
 	"GREATERTHANEQUAL": 5,
+	"AND":              6,
+	"OR":               7,
 }
 
 func (x Operation) String() string {
@@ -91,16 +97,9 @@ type Channel struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func ChannelFromBytes(data []byte) (*Channel, error) {
-	t := &Channel{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *Channel) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *Channel) Reset()                   { *m = Channel{} }
-func (m *Channel) String() string           { return proto.CompactTextString(m) }
-func (*Channel) ProtoMessage()              {}
+func (m *Channel) Reset()         { *m = Channel{} }
+func (m *Channel) String() string { return proto.CompactTextString(m) }
+func (*Channel) ProtoMessage()    {}
 func (*Channel) Descriptor() ([]byte, []int) {
 	return fileDescriptor_07e8e0fa338d4596, []int{0}
 }
@@ -173,16 +172,9 @@ type TriggerCommand struct {
 	XXX_sizecache        int32      `json:"-"`
 }
 
-func TriggerCommandFromBytes(data []byte) (*TriggerCommand, error) {
-	t := &TriggerCommand{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *TriggerCommand) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *TriggerCommand) Reset()                   { *m = TriggerCommand{} }
-func (m *TriggerCommand) String() string           { return proto.CompactTextString(m) }
-func (*TriggerCommand) ProtoMessage()              {}
+func (m *TriggerCommand) Reset()         { *m = TriggerCommand{} }
+func (m *TriggerCommand) String() string { return proto.CompactTextString(m) }
+func (*TriggerCommand) ProtoMessage()    {}
 func (*TriggerCommand) Descriptor() ([]byte, []int) {
 	return fileDescriptor_07e8e0fa338d4596, []int{1}
 }
@@ -219,6 +211,45 @@ func (m *TriggerCommand) GetChannels() []*Channel {
 	return nil
 }
 
+type ThingChLink struct {
+	Uid                  string   `protobuf:"bytes,1,opt,name=uid,proto3" json:"uid,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *ThingChLink) Reset()         { *m = ThingChLink{} }
+func (m *ThingChLink) String() string { return proto.CompactTextString(m) }
+func (*ThingChLink) ProtoMessage()    {}
+func (*ThingChLink) Descriptor() ([]byte, []int) {
+	return fileDescriptor_07e8e0fa338d4596, []int{2}
+}
+
+func (m *ThingChLink) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_ThingChLink.Unmarshal(m, b)
+}
+func (m *ThingChLink) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_ThingChLink.Marshal(b, m, deterministic)
+}
+func (m *ThingChLink) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ThingChLink.Merge(m, src)
+}
+func (m *ThingChLink) XXX_Size() int {
+	return xxx_messageInfo_ThingChLink.Size(m)
+}
+func (m *ThingChLink) XXX_DiscardUnknown() {
+	xxx_messageInfo_ThingChLink.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_ThingChLink proto.InternalMessageInfo
+
+func (m *ThingChLink) GetUid() string {
+	if m != nil {
+		return m.Uid
+	}
+	return ""
+}
+
 type Rule struct {
 	// @inject_tag: bson:"_id"
 	Id                   string            `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty" bson:"_id"`
@@ -233,23 +264,24 @@ type Rule struct {
 	TriggerType          TriggerType       `protobuf:"varint,10,opt,name=triggerType,proto3,enum=ruleproto.TriggerType" json:"triggerType,omitempty"`
 	TriggerCommands      []*TriggerCommand `protobuf:"bytes,11,rep,name=triggerCommands,proto3" json:"triggerCommands,omitempty"`
 	Channel              string            `protobuf:"bytes,12,opt,name=channel,proto3" json:"channel,omitempty"`
+	Val                  bool              `protobuf:"varint,13,opt,name=val,proto3" json:"val,omitempty"`
+	Vals                 string            `protobuf:"bytes,14,opt,name=vals,proto3" json:"vals,omitempty"`
+	Rules                []*Rule           `protobuf:"bytes,15,rep,name=rules,proto3" json:"rules,omitempty"`
+	ThingChLink          *ThingChLink      `protobuf:"bytes,16,opt,name=thingChLink,proto3" json:"thingChLink,omitempty"`
+	IsRoot               bool              `protobuf:"varint,17,opt,name=isRoot,proto3" json:"isRoot,omitempty"`
+	Uid                  string            `protobuf:"bytes,18,opt,name=uid,proto3" json:"uid,omitempty"`
+	IsLeaf               bool              `protobuf:"varint,19,opt,name=isLeaf,proto3" json:"isLeaf,omitempty"`
+	Root                 string            `protobuf:"bytes,20,opt,name=root,proto3" json:"root,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
 	XXX_unrecognized     []byte            `json:"-"`
 	XXX_sizecache        int32             `json:"-"`
 }
 
-func RuleFromBytes(data []byte) (*Rule, error) {
-	t := &Rule{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *Rule) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *Rule) Reset()                   { *m = Rule{} }
-func (m *Rule) String() string           { return proto.CompactTextString(m) }
-func (*Rule) ProtoMessage()              {}
+func (m *Rule) Reset()         { *m = Rule{} }
+func (m *Rule) String() string { return proto.CompactTextString(m) }
+func (*Rule) ProtoMessage()    {}
 func (*Rule) Descriptor() ([]byte, []int) {
-	return fileDescriptor_07e8e0fa338d4596, []int{2}
+	return fileDescriptor_07e8e0fa338d4596, []int{3}
 }
 
 func (m *Rule) XXX_Unmarshal(b []byte) error {
@@ -354,25 +386,75 @@ func (m *Rule) GetChannel() string {
 	return ""
 }
 
+func (m *Rule) GetVal() bool {
+	if m != nil {
+		return m.Val
+	}
+	return false
+}
+
+func (m *Rule) GetVals() string {
+	if m != nil {
+		return m.Vals
+	}
+	return ""
+}
+
+func (m *Rule) GetRules() []*Rule {
+	if m != nil {
+		return m.Rules
+	}
+	return nil
+}
+
+func (m *Rule) GetThingChLink() *ThingChLink {
+	if m != nil {
+		return m.ThingChLink
+	}
+	return nil
+}
+
+func (m *Rule) GetIsRoot() bool {
+	if m != nil {
+		return m.IsRoot
+	}
+	return false
+}
+
+func (m *Rule) GetUid() string {
+	if m != nil {
+		return m.Uid
+	}
+	return ""
+}
+
+func (m *Rule) GetIsLeaf() bool {
+	if m != nil {
+		return m.IsLeaf
+	}
+	return false
+}
+
+func (m *Rule) GetRoot() string {
+	if m != nil {
+		return m.Root
+	}
+	return ""
+}
+
 type CreateRuleRequest struct {
 	Rule                 *Rule    `protobuf:"bytes,1,opt,name=rule,proto3" json:"rule,omitempty"`
+	ThingsMap            string   `protobuf:"bytes,2,opt,name=thingsMap,proto3" json:"thingsMap,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func CreateRuleRequestFromBytes(data []byte) (*CreateRuleRequest, error) {
-	t := &CreateRuleRequest{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *CreateRuleRequest) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *CreateRuleRequest) Reset()                   { *m = CreateRuleRequest{} }
-func (m *CreateRuleRequest) String() string           { return proto.CompactTextString(m) }
-func (*CreateRuleRequest) ProtoMessage()              {}
+func (m *CreateRuleRequest) Reset()         { *m = CreateRuleRequest{} }
+func (m *CreateRuleRequest) String() string { return proto.CompactTextString(m) }
+func (*CreateRuleRequest) ProtoMessage()    {}
 func (*CreateRuleRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_07e8e0fa338d4596, []int{3}
+	return fileDescriptor_07e8e0fa338d4596, []int{4}
 }
 
 func (m *CreateRuleRequest) XXX_Unmarshal(b []byte) error {
@@ -400,6 +482,13 @@ func (m *CreateRuleRequest) GetRule() *Rule {
 	return nil
 }
 
+func (m *CreateRuleRequest) GetThingsMap() string {
+	if m != nil {
+		return m.ThingsMap
+	}
+	return ""
+}
+
 type CreateRuleResponse struct {
 	Success              bool     `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
 	Error                string   `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
@@ -409,18 +498,11 @@ type CreateRuleResponse struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func CreateRuleResponseFromBytes(data []byte) (*CreateRuleResponse, error) {
-	t := &CreateRuleResponse{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *CreateRuleResponse) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *CreateRuleResponse) Reset()                   { *m = CreateRuleResponse{} }
-func (m *CreateRuleResponse) String() string           { return proto.CompactTextString(m) }
-func (*CreateRuleResponse) ProtoMessage()              {}
+func (m *CreateRuleResponse) Reset()         { *m = CreateRuleResponse{} }
+func (m *CreateRuleResponse) String() string { return proto.CompactTextString(m) }
+func (*CreateRuleResponse) ProtoMessage()    {}
 func (*CreateRuleResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_07e8e0fa338d4596, []int{4}
+	return fileDescriptor_07e8e0fa338d4596, []int{5}
 }
 
 func (m *CreateRuleResponse) XXX_Unmarshal(b []byte) error {
@@ -469,18 +551,11 @@ type DeleteRuleRequest struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func DeleteRuleRequestFromBytes(data []byte) (*DeleteRuleRequest, error) {
-	t := &DeleteRuleRequest{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *DeleteRuleRequest) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *DeleteRuleRequest) Reset()                   { *m = DeleteRuleRequest{} }
-func (m *DeleteRuleRequest) String() string           { return proto.CompactTextString(m) }
-func (*DeleteRuleRequest) ProtoMessage()              {}
+func (m *DeleteRuleRequest) Reset()         { *m = DeleteRuleRequest{} }
+func (m *DeleteRuleRequest) String() string { return proto.CompactTextString(m) }
+func (*DeleteRuleRequest) ProtoMessage()    {}
 func (*DeleteRuleRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_07e8e0fa338d4596, []int{5}
+	return fileDescriptor_07e8e0fa338d4596, []int{6}
 }
 
 func (m *DeleteRuleRequest) XXX_Unmarshal(b []byte) error {
@@ -516,18 +591,11 @@ type DeleteRuleResponse struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func DeleteRuleResponseFromBytes(data []byte) (*DeleteRuleResponse, error) {
-	t := &DeleteRuleResponse{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *DeleteRuleResponse) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *DeleteRuleResponse) Reset()                   { *m = DeleteRuleResponse{} }
-func (m *DeleteRuleResponse) String() string           { return proto.CompactTextString(m) }
-func (*DeleteRuleResponse) ProtoMessage()              {}
+func (m *DeleteRuleResponse) Reset()         { *m = DeleteRuleResponse{} }
+func (m *DeleteRuleResponse) String() string { return proto.CompactTextString(m) }
+func (*DeleteRuleResponse) ProtoMessage()    {}
 func (*DeleteRuleResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_07e8e0fa338d4596, []int{6}
+	return fileDescriptor_07e8e0fa338d4596, []int{7}
 }
 
 func (m *DeleteRuleResponse) XXX_Unmarshal(b []byte) error {
@@ -569,18 +637,11 @@ type ProjectRulesRequest struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func ProjectRulesRequestFromBytes(data []byte) (*ProjectRulesRequest, error) {
-	t := &ProjectRulesRequest{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *ProjectRulesRequest) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *ProjectRulesRequest) Reset()                   { *m = ProjectRulesRequest{} }
-func (m *ProjectRulesRequest) String() string           { return proto.CompactTextString(m) }
-func (*ProjectRulesRequest) ProtoMessage()              {}
+func (m *ProjectRulesRequest) Reset()         { *m = ProjectRulesRequest{} }
+func (m *ProjectRulesRequest) String() string { return proto.CompactTextString(m) }
+func (*ProjectRulesRequest) ProtoMessage()    {}
 func (*ProjectRulesRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_07e8e0fa338d4596, []int{7}
+	return fileDescriptor_07e8e0fa338d4596, []int{8}
 }
 
 func (m *ProjectRulesRequest) XXX_Unmarshal(b []byte) error {
@@ -617,18 +678,11 @@ type ProjectRulesResponse struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func ProjectRulesResponseFromBytes(data []byte) (*ProjectRulesResponse, error) {
-	t := &ProjectRulesResponse{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *ProjectRulesResponse) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *ProjectRulesResponse) Reset()                   { *m = ProjectRulesResponse{} }
-func (m *ProjectRulesResponse) String() string           { return proto.CompactTextString(m) }
-func (*ProjectRulesResponse) ProtoMessage()              {}
+func (m *ProjectRulesResponse) Reset()         { *m = ProjectRulesResponse{} }
+func (m *ProjectRulesResponse) String() string { return proto.CompactTextString(m) }
+func (*ProjectRulesResponse) ProtoMessage()    {}
 func (*ProjectRulesResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_07e8e0fa338d4596, []int{8}
+	return fileDescriptor_07e8e0fa338d4596, []int{9}
 }
 
 func (m *ProjectRulesResponse) XXX_Unmarshal(b []byte) error {
@@ -677,18 +731,11 @@ type CheckThingRuleRequest struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func CheckThingRuleRequestFromBytes(data []byte) (*CheckThingRuleRequest, error) {
-	t := &CheckThingRuleRequest{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *CheckThingRuleRequest) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *CheckThingRuleRequest) Reset()                   { *m = CheckThingRuleRequest{} }
-func (m *CheckThingRuleRequest) String() string           { return proto.CompactTextString(m) }
-func (*CheckThingRuleRequest) ProtoMessage()              {}
+func (m *CheckThingRuleRequest) Reset()         { *m = CheckThingRuleRequest{} }
+func (m *CheckThingRuleRequest) String() string { return proto.CompactTextString(m) }
+func (*CheckThingRuleRequest) ProtoMessage()    {}
 func (*CheckThingRuleRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_07e8e0fa338d4596, []int{9}
+	return fileDescriptor_07e8e0fa338d4596, []int{10}
 }
 
 func (m *CheckThingRuleRequest) XXX_Unmarshal(b []byte) error {
@@ -724,18 +771,11 @@ type CheckThingRuleResponse struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func CheckThingRuleResponseFromBytes(data []byte) (*CheckThingRuleResponse, error) {
-	t := &CheckThingRuleResponse{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *CheckThingRuleResponse) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *CheckThingRuleResponse) Reset()                   { *m = CheckThingRuleResponse{} }
-func (m *CheckThingRuleResponse) String() string           { return proto.CompactTextString(m) }
-func (*CheckThingRuleResponse) ProtoMessage()              {}
+func (m *CheckThingRuleResponse) Reset()         { *m = CheckThingRuleResponse{} }
+func (m *CheckThingRuleResponse) String() string { return proto.CompactTextString(m) }
+func (*CheckThingRuleResponse) ProtoMessage()    {}
 func (*CheckThingRuleResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_07e8e0fa338d4596, []int{10}
+	return fileDescriptor_07e8e0fa338d4596, []int{11}
 }
 
 func (m *CheckThingRuleResponse) XXX_Unmarshal(b []byte) error {
@@ -770,11 +810,106 @@ func (m *CheckThingRuleResponse) GetError() string {
 	return ""
 }
 
+type CreateThingLinkRequest struct {
+	Thing                string   `protobuf:"bytes,1,opt,name=thing,proto3" json:"thing,omitempty"`
+	Channels             []string `protobuf:"bytes,2,rep,name=channels,proto3" json:"channels,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *CreateThingLinkRequest) Reset()         { *m = CreateThingLinkRequest{} }
+func (m *CreateThingLinkRequest) String() string { return proto.CompactTextString(m) }
+func (*CreateThingLinkRequest) ProtoMessage()    {}
+func (*CreateThingLinkRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_07e8e0fa338d4596, []int{12}
+}
+
+func (m *CreateThingLinkRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CreateThingLinkRequest.Unmarshal(m, b)
+}
+func (m *CreateThingLinkRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CreateThingLinkRequest.Marshal(b, m, deterministic)
+}
+func (m *CreateThingLinkRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CreateThingLinkRequest.Merge(m, src)
+}
+func (m *CreateThingLinkRequest) XXX_Size() int {
+	return xxx_messageInfo_CreateThingLinkRequest.Size(m)
+}
+func (m *CreateThingLinkRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_CreateThingLinkRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CreateThingLinkRequest proto.InternalMessageInfo
+
+func (m *CreateThingLinkRequest) GetThing() string {
+	if m != nil {
+		return m.Thing
+	}
+	return ""
+}
+
+func (m *CreateThingLinkRequest) GetChannels() []string {
+	if m != nil {
+		return m.Channels
+	}
+	return nil
+}
+
+type CreateThingLinkResponse struct {
+	Success              bool     `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Error                string   `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *CreateThingLinkResponse) Reset()         { *m = CreateThingLinkResponse{} }
+func (m *CreateThingLinkResponse) String() string { return proto.CompactTextString(m) }
+func (*CreateThingLinkResponse) ProtoMessage()    {}
+func (*CreateThingLinkResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_07e8e0fa338d4596, []int{13}
+}
+
+func (m *CreateThingLinkResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_CreateThingLinkResponse.Unmarshal(m, b)
+}
+func (m *CreateThingLinkResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_CreateThingLinkResponse.Marshal(b, m, deterministic)
+}
+func (m *CreateThingLinkResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CreateThingLinkResponse.Merge(m, src)
+}
+func (m *CreateThingLinkResponse) XXX_Size() int {
+	return xxx_messageInfo_CreateThingLinkResponse.Size(m)
+}
+func (m *CreateThingLinkResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_CreateThingLinkResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_CreateThingLinkResponse proto.InternalMessageInfo
+
+func (m *CreateThingLinkResponse) GetSuccess() bool {
+	if m != nil {
+		return m.Success
+	}
+	return false
+}
+
+func (m *CreateThingLinkResponse) GetError() string {
+	if m != nil {
+		return m.Error
+	}
+	return ""
+}
+
 func init() {
 	proto.RegisterEnum("ruleproto.Operation", Operation_name, Operation_value)
 	proto.RegisterEnum("ruleproto.TriggerType", TriggerType_name, TriggerType_value)
 	proto.RegisterType((*Channel)(nil), "ruleproto.Channel")
 	proto.RegisterType((*TriggerCommand)(nil), "ruleproto.TriggerCommand")
+	proto.RegisterType((*ThingChLink)(nil), "ruleproto.ThingChLink")
 	proto.RegisterType((*Rule)(nil), "ruleproto.Rule")
 	proto.RegisterType((*CreateRuleRequest)(nil), "ruleproto.CreateRuleRequest")
 	proto.RegisterType((*CreateRuleResponse)(nil), "ruleproto.CreateRuleResponse")
@@ -784,46 +919,58 @@ func init() {
 	proto.RegisterType((*ProjectRulesResponse)(nil), "ruleproto.ProjectRulesResponse")
 	proto.RegisterType((*CheckThingRuleRequest)(nil), "ruleproto.CheckThingRuleRequest")
 	proto.RegisterType((*CheckThingRuleResponse)(nil), "ruleproto.CheckThingRuleResponse")
+	proto.RegisterType((*CreateThingLinkRequest)(nil), "ruleproto.CreateThingLinkRequest")
+	proto.RegisterType((*CreateThingLinkResponse)(nil), "ruleproto.CreateThingLinkResponse")
 }
 
 func init() { proto.RegisterFile("rule.proto", fileDescriptor_07e8e0fa338d4596) }
 
 var fileDescriptor_07e8e0fa338d4596 = []byte{
-	// 573 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x53, 0x4d, 0x6f, 0xda, 0x4c,
-	0x10, 0x8e, 0xbf, 0x00, 0x8f, 0xf3, 0x26, 0x30, 0x2f, 0x8d, 0xdc, 0xaa, 0xaa, 0x2c, 0x57, 0x55,
-	0xac, 0x1c, 0xa8, 0x44, 0x2f, 0x39, 0x16, 0x19, 0xd4, 0x1c, 0x12, 0x68, 0x37, 0x6e, 0xee, 0x0e,
-	0x6c, 0xc1, 0xad, 0xb1, 0x5d, 0x7b, 0x7d, 0xe8, 0x0f, 0xea, 0xa9, 0x7f, 0xb2, 0xf2, 0xae, 0x0d,
-	0x0b, 0x28, 0x8d, 0xc4, 0x6d, 0x67, 0xe6, 0x79, 0xe6, 0xe3, 0x99, 0x59, 0x80, 0xbc, 0x8c, 0xe9,
-	0x20, 0xcb, 0x53, 0x96, 0xa2, 0x59, 0xbd, 0xf9, 0xd3, 0xfd, 0xa3, 0x40, 0xdb, 0x5f, 0x85, 0x49,
-	0x42, 0x63, 0x3c, 0x03, 0x35, 0x5a, 0xd8, 0x8a, 0xa3, 0x78, 0x26, 0x51, 0xa3, 0x05, 0xbe, 0x01,
-	0xf8, 0x16, 0xa7, 0x21, 0x7b, 0x08, 0xe3, 0x92, 0xda, 0xaa, 0xa3, 0x78, 0x0a, 0x91, 0x3c, 0xe8,
-	0x80, 0x55, 0xb0, 0x3c, 0x4a, 0x96, 0x02, 0xa0, 0x71, 0xa2, 0xec, 0xc2, 0xd7, 0x60, 0x3e, 0xa6,
-	0x69, 0x2c, 0xe2, 0xba, 0xa3, 0x78, 0x1d, 0xb2, 0x75, 0x54, 0xd1, 0x45, 0xc8, 0x42, 0x11, 0x35,
-	0x38, 0x7b, 0xeb, 0x40, 0x04, 0xbd, 0x4c, 0x22, 0x66, 0xb7, 0x1c, 0xc5, 0x33, 0x08, 0x7f, 0xbb,
-	0x0f, 0x70, 0x16, 0xe4, 0xd1, 0x72, 0x49, 0x73, 0x3f, 0x5d, 0xaf, 0xc3, 0x64, 0x81, 0x7d, 0x30,
-	0xd8, 0x2a, 0x4a, 0x96, 0x75, 0xdb, 0xc2, 0xc0, 0x01, 0x74, 0xe6, 0x62, 0xa8, 0xc2, 0x56, 0x1d,
-	0xcd, 0xb3, 0x86, 0x38, 0xd8, 0xcc, 0x3c, 0xa8, 0xe7, 0x25, 0x1b, 0x8c, 0xfb, 0x5b, 0x03, 0x9d,
-	0x94, 0x31, 0x3d, 0x90, 0x60, 0x93, 0x5e, 0x95, 0xd3, 0xdb, 0xd0, 0xce, 0xf2, 0xf4, 0x3b, 0x9d,
-	0xb3, 0x7a, 0xe8, 0xc6, 0xdc, 0x93, 0x4c, 0x7f, 0x4e, 0x32, 0xe3, 0x19, 0xc9, 0x5a, 0xff, 0x94,
-	0xac, 0xfd, 0x94, 0x64, 0x9d, 0xad, 0x64, 0x38, 0x04, 0x33, 0xcd, 0x68, 0x1e, 0xb2, 0x28, 0x4d,
-	0x6c, 0xd3, 0x51, 0xbc, 0xb3, 0x61, 0x5f, 0xd2, 0x62, 0xd6, 0xc4, 0xc8, 0x16, 0x86, 0xd7, 0x60,
-	0x31, 0x21, 0x73, 0xf0, 0x2b, 0xa3, 0x36, 0x70, 0xd6, 0x85, 0xc4, 0x0a, 0xb6, 0x51, 0x22, 0x43,
-	0xd1, 0x87, 0x73, 0xb6, 0xb3, 0xa0, 0xc2, 0xb6, 0xb8, 0xfe, 0x2f, 0x0f, 0xd9, 0x35, 0x82, 0xec,
-	0x33, 0x2a, 0x79, 0xeb, 0xcd, 0xd8, 0xa7, 0x42, 0xde, 0xda, 0x74, 0xaf, 0xa1, 0xe7, 0xe7, 0x34,
-	0x64, 0xb4, 0x5a, 0x16, 0xa1, 0x3f, 0x4b, 0x5a, 0x30, 0x7c, 0x0b, 0x7a, 0x95, 0x9b, 0x6f, 0xcd,
-	0x1a, 0x9e, 0x4b, 0x85, 0x38, 0x8a, 0x07, 0xdd, 0x00, 0x50, 0x66, 0x16, 0x59, 0x9a, 0x14, 0xb4,
-	0xaa, 0x54, 0x94, 0xf3, 0x39, 0x2d, 0x0a, 0xce, 0xee, 0x90, 0xc6, 0xac, 0x16, 0x4f, 0xf3, 0x3c,
-	0xcd, 0x9b, 0xc5, 0x73, 0xa3, 0x3e, 0x0f, 0xad, 0x39, 0x0f, 0xf7, 0x12, 0x7a, 0x63, 0x1a, 0xd3,
-	0xdd, 0x7e, 0x50, 0xea, 0xc7, 0xac, 0xcb, 0x8f, 0x01, 0x65, 0xe0, 0x71, 0xe5, 0xdd, 0xf7, 0xf0,
-	0xff, 0x67, 0x71, 0x68, 0x55, 0x9a, 0xa2, 0x29, 0x28, 0x9d, 0xa3, 0xb2, 0x73, 0x8e, 0xee, 0x1a,
-	0xfa, 0xbb, 0x84, 0x23, 0xe7, 0x7e, 0x07, 0x46, 0x35, 0x46, 0x61, 0x6b, 0x7c, 0x99, 0x07, 0x1a,
-	0x8b, 0xa8, 0xfb, 0x11, 0x5e, 0xf8, 0x2b, 0x3a, 0xff, 0x11, 0x54, 0xbf, 0x44, 0x96, 0xe4, 0x12,
-	0x5a, 0x65, 0xb6, 0x08, 0xd9, 0x93, 0x4b, 0xaa, 0xc3, 0xee, 0x0d, 0x5c, 0xec, 0x67, 0x38, 0xae,
-	0xe5, 0xab, 0x18, 0xcc, 0xcd, 0x6d, 0xa3, 0x09, 0xc6, 0xe4, 0xcb, 0xd7, 0xd1, 0x6d, 0xf7, 0x04,
-	0x4f, 0xa1, 0x33, 0x9d, 0x05, 0xc2, 0x52, 0x2a, 0xeb, 0x76, 0x72, 0x7f, 0x1f, 0xdc, 0x8c, 0xa6,
-	0x5d, 0x15, 0x7b, 0xf0, 0x5f, 0x63, 0x09, 0x80, 0x86, 0xe7, 0x60, 0x7d, 0x22, 0x93, 0x51, 0x30,
-	0x21, 0x1c, 0xa3, 0x63, 0x1f, 0xba, 0x92, 0x43, 0xc0, 0x8c, 0xab, 0x57, 0x60, 0x49, 0x7f, 0x02,
-	0x2d, 0x68, 0xfb, 0xb3, 0xbb, 0xbb, 0xd1, 0x74, 0xdc, 0x3d, 0x79, 0x6c, 0xf1, 0x39, 0x3f, 0xfc,
-	0x0d, 0x00, 0x00, 0xff, 0xff, 0x90, 0x27, 0xf1, 0x7d, 0x82, 0x05, 0x00, 0x00,
+	// 723 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x54, 0x4d, 0x6f, 0xda, 0x4c,
+	0x10, 0x8e, 0x01, 0x03, 0x1e, 0x27, 0x7c, 0x4c, 0x78, 0x79, 0xb7, 0x51, 0xd5, 0x5a, 0xae, 0xaa,
+	0xa0, 0x1c, 0xa8, 0x94, 0x5e, 0x7a, 0x2c, 0x22, 0xa8, 0x69, 0x45, 0x42, 0xbb, 0x71, 0x73, 0x77,
+	0x60, 0x03, 0x6e, 0x1c, 0x9b, 0xfa, 0x23, 0x52, 0x0f, 0xbd, 0xf4, 0xef, 0xf4, 0x4f, 0x56, 0xbb,
+	0x6b, 0xe3, 0x85, 0x7c, 0x49, 0xdc, 0x66, 0x76, 0x9e, 0xd9, 0x99, 0x79, 0xe6, 0xd9, 0x05, 0x88,
+	0x52, 0x9f, 0xf5, 0x97, 0x51, 0x98, 0x84, 0x68, 0x70, 0x5b, 0x98, 0xf6, 0x5f, 0x0d, 0x6a, 0xc3,
+	0x85, 0x1b, 0x04, 0xcc, 0xc7, 0x06, 0x94, 0xbc, 0x19, 0xd1, 0x2c, 0xad, 0x67, 0xd0, 0x92, 0x37,
+	0xc3, 0x57, 0x00, 0xd7, 0x7e, 0xe8, 0x26, 0x97, 0xae, 0x9f, 0x32, 0x52, 0xb2, 0xb4, 0x9e, 0x46,
+	0x95, 0x13, 0xb4, 0xc0, 0x8c, 0x93, 0xc8, 0x0b, 0xe6, 0x12, 0x50, 0x16, 0x89, 0xea, 0x11, 0xbe,
+	0x04, 0xe3, 0x2a, 0x0c, 0x7d, 0x19, 0xaf, 0x58, 0x5a, 0xaf, 0x4e, 0x8b, 0x03, 0x1e, 0x9d, 0xb9,
+	0x89, 0x2b, 0xa3, 0xba, 0xc8, 0x2e, 0x0e, 0x10, 0xa1, 0x92, 0x06, 0x5e, 0x42, 0xaa, 0x96, 0xd6,
+	0xd3, 0xa9, 0xb0, 0xed, 0x4b, 0x68, 0x38, 0x91, 0x37, 0x9f, 0xb3, 0x68, 0x18, 0xde, 0xde, 0xba,
+	0xc1, 0x0c, 0x3b, 0xa0, 0x27, 0x0b, 0x2f, 0x98, 0x67, 0x6d, 0x4b, 0x07, 0xfb, 0x50, 0x9f, 0xca,
+	0xa1, 0x62, 0x52, 0xb2, 0xca, 0x3d, 0xf3, 0x18, 0xfb, 0xab, 0x99, 0xfb, 0xd9, 0xbc, 0x74, 0x85,
+	0xb1, 0x5f, 0x83, 0xe9, 0xf0, 0xc4, 0xe1, 0x62, 0xec, 0x05, 0x37, 0xd8, 0x82, 0x72, 0xba, 0x62,
+	0x82, 0x9b, 0xf6, 0x1f, 0x1d, 0x2a, 0x34, 0xf5, 0xd9, 0x3d, 0x8e, 0x56, 0xf5, 0x4b, 0x6a, 0x7d,
+	0x02, 0xb5, 0x65, 0x14, 0xfe, 0x60, 0xd3, 0x24, 0x63, 0x25, 0x77, 0x37, 0x38, 0xad, 0x3c, 0xc7,
+	0xa9, 0xfe, 0x0c, 0xa7, 0xd5, 0x27, 0x39, 0xad, 0x3d, 0xc6, 0x69, 0xbd, 0xe0, 0x14, 0x8f, 0xc1,
+	0x08, 0x97, 0x2c, 0x72, 0x13, 0x2f, 0x0c, 0x88, 0x61, 0x69, 0xbd, 0xc6, 0x71, 0x47, 0x21, 0x6b,
+	0x92, 0xc7, 0x68, 0x01, 0xc3, 0x0f, 0x60, 0x26, 0x72, 0x0f, 0xce, 0xaf, 0x25, 0x23, 0x20, 0xb2,
+	0xba, 0x4a, 0x96, 0x53, 0x44, 0xa9, 0x0a, 0xc5, 0x21, 0x34, 0x93, 0xb5, 0x0d, 0xc6, 0xc4, 0x14,
+	0x0b, 0x7a, 0x71, 0x3f, 0x3b, 0x43, 0xd0, 0xcd, 0x0c, 0x4e, 0x6f, 0xb6, 0x3a, 0xb2, 0x2b, 0xe9,
+	0xcd, 0x5c, 0xbe, 0xb9, 0x3b, 0xd7, 0x27, 0x7b, 0x82, 0x16, 0x6e, 0xf2, 0x91, 0xef, 0x5c, 0x3f,
+	0x26, 0x0d, 0x01, 0x14, 0x36, 0xbe, 0x05, 0x9d, 0x17, 0x8b, 0x49, 0x53, 0x94, 0x6e, 0x2a, 0xa5,
+	0xf9, 0x92, 0xa9, 0x8c, 0x8a, 0x29, 0x0b, 0x55, 0x90, 0x96, 0xa5, 0xf5, 0xcc, 0xf5, 0x29, 0x8b,
+	0x28, 0x55, 0xa1, 0xd8, 0x85, 0xaa, 0x17, 0xd3, 0x30, 0x4c, 0x48, 0x5b, 0x74, 0x92, 0x79, 0xb9,
+	0xb0, 0x70, 0x25, 0x2c, 0x89, 0x1c, 0x33, 0xf7, 0x9a, 0xec, 0xe7, 0x48, 0xee, 0xf1, 0xb6, 0x23,
+	0x9e, 0xdf, 0x91, 0x6d, 0x73, 0xdb, 0xbe, 0x84, 0xf6, 0x30, 0x62, 0x6e, 0xc2, 0x44, 0x93, 0xec,
+	0x67, 0xca, 0xe2, 0x04, 0xdf, 0x40, 0x85, 0x37, 0x24, 0x24, 0xf9, 0xc0, 0x28, 0x22, 0xc8, 0x55,
+	0x21, 0xda, 0x8b, 0xcf, 0xdc, 0x65, 0xa6, 0xd4, 0xe2, 0xc0, 0x76, 0x00, 0xd5, 0x7b, 0xe3, 0x65,
+	0x18, 0xc4, 0x8c, 0x93, 0x1c, 0xa7, 0xd3, 0x29, 0x8b, 0x63, 0x71, 0x77, 0x9d, 0xe6, 0x2e, 0xd7,
+	0x3c, 0x8b, 0xa2, 0x30, 0xca, 0x35, 0x2f, 0x9c, 0xec, 0x65, 0x94, 0xf3, 0x97, 0x61, 0x1f, 0x42,
+	0xfb, 0x84, 0xf9, 0x6c, 0xbd, 0x5b, 0x54, 0xba, 0x35, 0x64, 0x73, 0xf6, 0x09, 0xa0, 0x0a, 0xdc,
+	0xae, 0xbc, 0xfd, 0x0e, 0xf6, 0xbf, 0xca, 0x37, 0xc6, 0xaf, 0x89, 0xf3, 0x82, 0xca, 0x4b, 0xd4,
+	0xd6, 0x5e, 0xa2, 0x7d, 0x0b, 0x9d, 0xf5, 0x84, 0x2d, 0xe7, 0x5e, 0x89, 0xa9, 0xfc, 0x94, 0x98,
+	0xec, 0x8f, 0xf0, 0xdf, 0x70, 0xc1, 0xa6, 0x37, 0x42, 0x33, 0x2a, 0x25, 0x87, 0x50, 0x4d, 0x97,
+	0x33, 0x37, 0x79, 0x74, 0x85, 0x59, 0xd8, 0x3e, 0x85, 0xee, 0xe6, 0x0d, 0x5b, 0x72, 0xf5, 0x05,
+	0xba, 0x72, 0xe1, 0xe2, 0x2a, 0x21, 0xdf, 0xac, 0x99, 0x87, 0xbf, 0xd3, 0x83, 0x8d, 0xef, 0xd4,
+	0x50, 0xbe, 0xce, 0xcf, 0xf0, 0xff, 0xbd, 0xbb, 0xb6, 0x6b, 0xeb, 0xe8, 0x37, 0x18, 0xab, 0xdf,
+	0x06, 0x0d, 0xd0, 0x47, 0xdf, 0xbe, 0x0f, 0xc6, 0xad, 0x1d, 0xdc, 0x85, 0xfa, 0xf9, 0xc4, 0x91,
+	0x9e, 0xc6, 0xbd, 0xf1, 0xe8, 0xe2, 0xc2, 0x39, 0x1d, 0x9c, 0xb7, 0x4a, 0xd8, 0x86, 0xbd, 0xdc,
+	0x93, 0x80, 0x32, 0x36, 0xc1, 0xfc, 0x44, 0x47, 0x03, 0x67, 0x44, 0x05, 0xa6, 0x82, 0x1d, 0x68,
+	0x29, 0x07, 0x12, 0xa6, 0x63, 0x0d, 0xca, 0x83, 0xf3, 0x93, 0x56, 0x15, 0xab, 0x50, 0x9a, 0xd0,
+	0x56, 0xed, 0xe8, 0x00, 0x4c, 0xe5, 0xdb, 0x42, 0x13, 0x6a, 0xc3, 0xc9, 0xd9, 0x19, 0xc7, 0xec,
+	0x5c, 0x55, 0xc5, 0x3e, 0xde, 0xff, 0x0b, 0x00, 0x00, 0xff, 0xff, 0x9d, 0x04, 0xa0, 0x50, 0x46,
+	0x07, 0x00, 0x00,
 }

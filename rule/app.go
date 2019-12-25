@@ -1,29 +1,37 @@
 package main
 
 import (
-	"log"
+	"errors"
 	"thingz-server/rule/topics"
 
-	lib "github.com/dev681999/helperlibs"
+	log "github.com/sirupsen/logrus"
 
+	lib "github.com/dev681999/helperlibs"
+	"google.golang.org/grpc"
+
+	"github.com/dgraph-io/dgo/v2"
+	"github.com/dgraph-io/dgo/v2/protos/api"
 	nats "github.com/nats-io/nats.go"
 )
 
-var collectionName = "rules"
+const collectionName = "rules"
 
 type appConfig struct {
-	DBURL   string `json:"dbUrl"`
-	DBUser  string `json:"dbUser"`
-	DBPass  string `json:"dbPass"`
-	DBName  string `json:"dbName"`
-	NATSUrl string `json:"natsUrl"`
+	DBURL     string `json:"dbUrl"`
+	DBUser    string `json:"dbUser"`
+	DBPass    string `json:"dbPass"`
+	DBName    string `json:"dbName"`
+	NATSUrl   string `json:"natsUrl"`
+	DgraphURL string `json:"dgraphUrl"`
 }
 
 type app struct {
-	eb *lib.EventBus
-	db *lib.Store
-	c  *appConfig
-	h  *lib.Hash
+	eb      *lib.EventBus
+	db      *lib.Store
+	c       *appConfig
+	h       *lib.Hash
+	grpcCon *grpc.ClientConn
+	dg      *dgo.Dgraph
 }
 
 func newApp(config *appConfig) *app {
@@ -91,6 +99,10 @@ func (a *app) Init() error {
 			Topic: topics.ProjectRules,
 			Func:  a.projectRules,
 		},
+		lib.Listener{
+			Topic: topics.CreateThingLink,
+			Func:  a.createThingLink,
+		},
 	}
 
 	err = a.eb.RegisterListeners(listeners)
@@ -100,6 +112,18 @@ func (a *app) Init() error {
 	}
 
 	log.Println("registering to event-bus complete")
+	log.Println("connecting to dgraph")
+	conn, err := grpc.Dial(a.c.DgraphURL, grpc.WithInsecure())
+	if err != nil {
+		return errors.New("While trying to dial gRPC")
+	}
+
+	a.grpcCon = conn
+
+	dc := api.NewDgraphClient(a.grpcCon)
+	a.dg = dgo.NewDgraphClient(dc)
+
+	log.Println("connecting to dgraph complete")
 	log.Println("init complete")
 
 	return nil
@@ -121,6 +145,13 @@ func (a *app) Close() {
 	}
 
 	log.Println("closed nats connection")
+	log.Println("closing dgraph connection")
+
+	if a.grpcCon != nil {
+		a.grpcCon.Close()
+	}
+
+	log.Println("closed dgraph connection")
 	log.Println("close complete")
 }
 

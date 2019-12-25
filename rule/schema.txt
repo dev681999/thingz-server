@@ -1,0 +1,53 @@
+# Define Types
+
+type Rule {
+  	id: string
+    thing: string
+    project: string
+    floatValue: float
+    stringValue: string
+    boolValue: bool
+    dataValue: string
+    unit: int
+    operation: int
+    triggerType: int
+    triggerCommands: [TriggerCommand]
+    channel: string
+    val: bool
+    vals: string
+    rules: [Rule]
+  	thingChLink: [ThingChLink]
+    isRoot: bool
+    isLeaf: bool
+    root: string
+}
+
+type TriggerCommand {
+    thing: string
+    channels: [Channel]
+}
+
+type Channel {
+    id: string
+    floatValue: float
+    stringValue: string
+    boolValue: bool
+    dataValue: string
+    unit: int
+}
+
+type ThingChLink {
+		thingId: string 
+}
+
+# Define Directives and index
+
+id: string @index(exact) .
+root: string @index(exact) .
+project: string @index(exact) .
+rules: [uid] @reverse .
+isRoot: bool @index(bool) .
+channels: [uid] .
+thingChLink: [uid] @reverse .
+thingId: string @index(exact) .
+triggerCommands: [uid] .

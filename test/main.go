@@ -1,22 +1,33 @@
 package main
 
 import (
-	"fmt"
-
-	client "github.com/influxdata/influxdb1-client/v2"
+	lib "github.com/dev681999/helperlibs"
 )
 
 func main() {
-	c, err := client.NewHTTPClient(client.HTTPConfig{
-		Addr: "http://localhost:8086",
+	s := &lib.Store{
+		Address:  "localhost:27017",
+		Username: "",
+		Password: "",
+		Database: "thingz-test",
+	}
+
+	err := s.Connect()
+	if err != nil {
+		panic(err)
+	}
+
+	defer s.Close()
+
+	db, err := s.GetMongoSession()
+	if err != nil {
+		panic(err)
+	}
+
+	err = db.DB("").C("test").Insert(map[string]interface{}{
+		"_id": "1234",
 	})
 	if err != nil {
-		fmt.Println("Error creating InfluxDB Client: ", err.Error())
-	}
-	defer c.Close()
-
-	q := client.NewQuery("SELECT * FROM cpu", "mydb", "")
-	if response, err := c.Query(q); err == nil && response.Error() == nil {
-		fmt.Println(response.Results[0])
+		panic(err)
 	}
 }

@@ -1,9 +1,10 @@
 package main
 
 import (
-	"log"
 	"thingz-server/lib"
 	proto "thingz-server/project/proto"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/globalsign/mgo/bson"
 )

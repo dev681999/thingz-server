@@ -68,16 +68,9 @@ type Channel struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func ChannelFromBytes(data []byte) (*Channel, error) {
-	t := &Channel{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *Channel) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *Channel) Reset()                   { *m = Channel{} }
-func (m *Channel) String() string           { return proto.CompactTextString(m) }
-func (*Channel) ProtoMessage()              {}
+func (m *Channel) Reset()         { *m = Channel{} }
+func (m *Channel) String() string { return proto.CompactTextString(m) }
+func (*Channel) ProtoMessage()    {}
 func (*Channel) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e0f9056a14b86d47, []int{0}
 }
@@ -178,16 +171,9 @@ type ThingUpdate struct {
 	XXX_sizecache        int32      `json:"-"`
 }
 
-func ThingUpdateFromBytes(data []byte) (*ThingUpdate, error) {
-	t := &ThingUpdate{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *ThingUpdate) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *ThingUpdate) Reset()                   { *m = ThingUpdate{} }
-func (m *ThingUpdate) String() string           { return proto.CompactTextString(m) }
-func (*ThingUpdate) ProtoMessage()              {}
+func (m *ThingUpdate) Reset()         { *m = ThingUpdate{} }
+func (m *ThingUpdate) String() string { return proto.CompactTextString(m) }
+func (*ThingUpdate) ProtoMessage()    {}
 func (*ThingUpdate) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e0f9056a14b86d47, []int{1}
 }
@@ -231,16 +217,9 @@ type SendThingUpdateRequest struct {
 	XXX_sizecache        int32        `json:"-"`
 }
 
-func SendThingUpdateRequestFromBytes(data []byte) (*SendThingUpdateRequest, error) {
-	t := &SendThingUpdateRequest{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *SendThingUpdateRequest) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *SendThingUpdateRequest) Reset()                   { *m = SendThingUpdateRequest{} }
-func (m *SendThingUpdateRequest) String() string           { return proto.CompactTextString(m) }
-func (*SendThingUpdateRequest) ProtoMessage()              {}
+func (m *SendThingUpdateRequest) Reset()         { *m = SendThingUpdateRequest{} }
+func (m *SendThingUpdateRequest) String() string { return proto.CompactTextString(m) }
+func (*SendThingUpdateRequest) ProtoMessage()    {}
 func (*SendThingUpdateRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e0f9056a14b86d47, []int{2}
 }
@@ -278,16 +257,9 @@ type SendThingUpdateResponse struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func SendThingUpdateResponseFromBytes(data []byte) (*SendThingUpdateResponse, error) {
-	t := &SendThingUpdateResponse{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *SendThingUpdateResponse) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *SendThingUpdateResponse) Reset()                   { *m = SendThingUpdateResponse{} }
-func (m *SendThingUpdateResponse) String() string           { return proto.CompactTextString(m) }
-func (*SendThingUpdateResponse) ProtoMessage()              {}
+func (m *SendThingUpdateResponse) Reset()         { *m = SendThingUpdateResponse{} }
+func (m *SendThingUpdateResponse) String() string { return proto.CompactTextString(m) }
+func (*SendThingUpdateResponse) ProtoMessage()    {}
 func (*SendThingUpdateResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_e0f9056a14b86d47, []int{3}
 }

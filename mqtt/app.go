@@ -1,14 +1,15 @@
 package main
 
 import (
-	"log"
 	"thingz-server/lib"
 	"thingz-server/mqtt/topics"
+
+	log "github.com/sirupsen/logrus"
 
 	nats "github.com/nats-io/nats.go"
 )
 
-var collectionName = "mqtts"
+const collectionName = "mqtts"
 
 type appConfig struct {
 	DBURL   string `json:"dbUrl"`
@@ -145,8 +146,4 @@ func (a *app) Close() {
 
 	log.Println("closed nats connection")
 	log.Println("close complete")
-}
-
-func (a *app) Test() string {
-	return "user-srv"
 }

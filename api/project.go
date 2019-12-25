@@ -2,11 +2,12 @@ package main
 
 import (
 	"errors"
-	"log"
 	"net/http"
 	"thingz-server/lib"
 	projectP "thingz-server/project/proto"
 	projectT "thingz-server/project/topics"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/labstack/echo"
 )

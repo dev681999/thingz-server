@@ -2,11 +2,12 @@ package main
 
 import (
 	"errors"
-	"log"
 	"net/http"
 	"thingz-server/lib"
 	userP "thingz-server/user/proto"
 	userT "thingz-server/user/topics"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo"

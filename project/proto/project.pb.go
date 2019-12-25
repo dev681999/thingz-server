@@ -32,16 +32,9 @@ type Project struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func ProjectFromBytes(data []byte) (*Project, error) {
-	t := &Project{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *Project) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *Project) Reset()                   { *m = Project{} }
-func (m *Project) String() string           { return proto.CompactTextString(m) }
-func (*Project) ProtoMessage()              {}
+func (m *Project) Reset()         { *m = Project{} }
+func (m *Project) String() string { return proto.CompactTextString(m) }
+func (*Project) ProtoMessage()    {}
 func (*Project) Descriptor() ([]byte, []int) {
 	return fileDescriptor_8340e6318dfdfac2, []int{0}
 }
@@ -106,16 +99,9 @@ type CreateProjectRequest struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func CreateProjectRequestFromBytes(data []byte) (*CreateProjectRequest, error) {
-	t := &CreateProjectRequest{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *CreateProjectRequest) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *CreateProjectRequest) Reset()                   { *m = CreateProjectRequest{} }
-func (m *CreateProjectRequest) String() string           { return proto.CompactTextString(m) }
-func (*CreateProjectRequest) ProtoMessage()              {}
+func (m *CreateProjectRequest) Reset()         { *m = CreateProjectRequest{} }
+func (m *CreateProjectRequest) String() string { return proto.CompactTextString(m) }
+func (*CreateProjectRequest) ProtoMessage()    {}
 func (*CreateProjectRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_8340e6318dfdfac2, []int{1}
 }
@@ -154,16 +140,9 @@ type CreateProjectResponse struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func CreateProjectResponseFromBytes(data []byte) (*CreateProjectResponse, error) {
-	t := &CreateProjectResponse{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *CreateProjectResponse) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *CreateProjectResponse) Reset()                   { *m = CreateProjectResponse{} }
-func (m *CreateProjectResponse) String() string           { return proto.CompactTextString(m) }
-func (*CreateProjectResponse) ProtoMessage()              {}
+func (m *CreateProjectResponse) Reset()         { *m = CreateProjectResponse{} }
+func (m *CreateProjectResponse) String() string { return proto.CompactTextString(m) }
+func (*CreateProjectResponse) ProtoMessage()    {}
 func (*CreateProjectResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_8340e6318dfdfac2, []int{2}
 }
@@ -214,16 +193,9 @@ type UserProjectsRequest struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func UserProjectsRequestFromBytes(data []byte) (*UserProjectsRequest, error) {
-	t := &UserProjectsRequest{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *UserProjectsRequest) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *UserProjectsRequest) Reset()                   { *m = UserProjectsRequest{} }
-func (m *UserProjectsRequest) String() string           { return proto.CompactTextString(m) }
-func (*UserProjectsRequest) ProtoMessage()              {}
+func (m *UserProjectsRequest) Reset()         { *m = UserProjectsRequest{} }
+func (m *UserProjectsRequest) String() string { return proto.CompactTextString(m) }
+func (*UserProjectsRequest) ProtoMessage()    {}
 func (*UserProjectsRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_8340e6318dfdfac2, []int{3}
 }
@@ -262,16 +234,9 @@ type UserProjectsResponse struct {
 	XXX_sizecache        int32      `json:"-"`
 }
 
-func UserProjectsResponseFromBytes(data []byte) (*UserProjectsResponse, error) {
-	t := &UserProjectsResponse{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *UserProjectsResponse) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *UserProjectsResponse) Reset()                   { *m = UserProjectsResponse{} }
-func (m *UserProjectsResponse) String() string           { return proto.CompactTextString(m) }
-func (*UserProjectsResponse) ProtoMessage()              {}
+func (m *UserProjectsResponse) Reset()         { *m = UserProjectsResponse{} }
+func (m *UserProjectsResponse) String() string { return proto.CompactTextString(m) }
+func (*UserProjectsResponse) ProtoMessage()    {}
 func (*UserProjectsResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_8340e6318dfdfac2, []int{4}
 }
@@ -323,16 +288,9 @@ type GetProjectRequest struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func GetProjectRequestFromBytes(data []byte) (*GetProjectRequest, error) {
-	t := &GetProjectRequest{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *GetProjectRequest) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *GetProjectRequest) Reset()                   { *m = GetProjectRequest{} }
-func (m *GetProjectRequest) String() string           { return proto.CompactTextString(m) }
-func (*GetProjectRequest) ProtoMessage()              {}
+func (m *GetProjectRequest) Reset()         { *m = GetProjectRequest{} }
+func (m *GetProjectRequest) String() string { return proto.CompactTextString(m) }
+func (*GetProjectRequest) ProtoMessage()    {}
 func (*GetProjectRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_8340e6318dfdfac2, []int{5}
 }
@@ -378,16 +336,9 @@ type GetProjectResponse struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func GetProjectResponseFromBytes(data []byte) (*GetProjectResponse, error) {
-	t := &GetProjectResponse{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *GetProjectResponse) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *GetProjectResponse) Reset()                   { *m = GetProjectResponse{} }
-func (m *GetProjectResponse) String() string           { return proto.CompactTextString(m) }
-func (*GetProjectResponse) ProtoMessage()              {}
+func (m *GetProjectResponse) Reset()         { *m = GetProjectResponse{} }
+func (m *GetProjectResponse) String() string { return proto.CompactTextString(m) }
+func (*GetProjectResponse) ProtoMessage()    {}
 func (*GetProjectResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_8340e6318dfdfac2, []int{6}
 }
@@ -439,16 +390,9 @@ type DeleteProjectRequest struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func DeleteProjectRequestFromBytes(data []byte) (*DeleteProjectRequest, error) {
-	t := &DeleteProjectRequest{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *DeleteProjectRequest) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *DeleteProjectRequest) Reset()                   { *m = DeleteProjectRequest{} }
-func (m *DeleteProjectRequest) String() string           { return proto.CompactTextString(m) }
-func (*DeleteProjectRequest) ProtoMessage()              {}
+func (m *DeleteProjectRequest) Reset()         { *m = DeleteProjectRequest{} }
+func (m *DeleteProjectRequest) String() string { return proto.CompactTextString(m) }
+func (*DeleteProjectRequest) ProtoMessage()    {}
 func (*DeleteProjectRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_8340e6318dfdfac2, []int{7}
 }
@@ -493,16 +437,9 @@ type DeleteProjectResponse struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func DeleteProjectResponseFromBytes(data []byte) (*DeleteProjectResponse, error) {
-	t := &DeleteProjectResponse{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *DeleteProjectResponse) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *DeleteProjectResponse) Reset()                   { *m = DeleteProjectResponse{} }
-func (m *DeleteProjectResponse) String() string           { return proto.CompactTextString(m) }
-func (*DeleteProjectResponse) ProtoMessage()              {}
+func (m *DeleteProjectResponse) Reset()         { *m = DeleteProjectResponse{} }
+func (m *DeleteProjectResponse) String() string { return proto.CompactTextString(m) }
+func (*DeleteProjectResponse) ProtoMessage()    {}
 func (*DeleteProjectResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_8340e6318dfdfac2, []int{8}
 }
@@ -549,16 +486,9 @@ type UpdateProjectRequest struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func UpdateProjectRequestFromBytes(data []byte) (*UpdateProjectRequest, error) {
-	t := &UpdateProjectRequest{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *UpdateProjectRequest) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *UpdateProjectRequest) Reset()                   { *m = UpdateProjectRequest{} }
-func (m *UpdateProjectRequest) String() string           { return proto.CompactTextString(m) }
-func (*UpdateProjectRequest) ProtoMessage()              {}
+func (m *UpdateProjectRequest) Reset()         { *m = UpdateProjectRequest{} }
+func (m *UpdateProjectRequest) String() string { return proto.CompactTextString(m) }
+func (*UpdateProjectRequest) ProtoMessage()    {}
 func (*UpdateProjectRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_8340e6318dfdfac2, []int{9}
 }
@@ -617,16 +547,9 @@ type UpdateProjectResponse struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func UpdateProjectResponseFromBytes(data []byte) (*UpdateProjectResponse, error) {
-	t := &UpdateProjectResponse{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *UpdateProjectResponse) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *UpdateProjectResponse) Reset()                   { *m = UpdateProjectResponse{} }
-func (m *UpdateProjectResponse) String() string           { return proto.CompactTextString(m) }
-func (*UpdateProjectResponse) ProtoMessage()              {}
+func (m *UpdateProjectResponse) Reset()         { *m = UpdateProjectResponse{} }
+func (m *UpdateProjectResponse) String() string { return proto.CompactTextString(m) }
+func (*UpdateProjectResponse) ProtoMessage()    {}
 func (*UpdateProjectResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_8340e6318dfdfac2, []int{10}
 }

@@ -1,14 +1,15 @@
 package main
 
 import (
-	"log"
 	"thingz-server/lib"
 	"thingz-server/project/topics"
+
+	log "github.com/sirupsen/logrus"
 
 	nats "github.com/nats-io/nats.go"
 )
 
-var collectionName = "projects"
+const collectionName = "projects"
 
 type appConfig struct {
 	DBURL   string `json:"dbUrl"`

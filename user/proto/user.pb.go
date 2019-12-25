@@ -31,16 +31,9 @@ type User struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func UserFromBytes(data []byte) (*User, error) {
-	t := &User{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *User) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *User) Reset()                   { *m = User{} }
-func (m *User) String() string           { return proto.CompactTextString(m) }
-func (*User) ProtoMessage()              {}
+func (m *User) Reset()         { *m = User{} }
+func (m *User) String() string { return proto.CompactTextString(m) }
+func (*User) ProtoMessage()    {}
 func (*User) Descriptor() ([]byte, []int) {
 	return fileDescriptor_116e343673f7ffaf, []int{0}
 }
@@ -98,16 +91,9 @@ type CreateUserRequest struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func CreateUserRequestFromBytes(data []byte) (*CreateUserRequest, error) {
-	t := &CreateUserRequest{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *CreateUserRequest) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *CreateUserRequest) Reset()                   { *m = CreateUserRequest{} }
-func (m *CreateUserRequest) String() string           { return proto.CompactTextString(m) }
-func (*CreateUserRequest) ProtoMessage()              {}
+func (m *CreateUserRequest) Reset()         { *m = CreateUserRequest{} }
+func (m *CreateUserRequest) String() string { return proto.CompactTextString(m) }
+func (*CreateUserRequest) ProtoMessage()    {}
 func (*CreateUserRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_116e343673f7ffaf, []int{1}
 }
@@ -146,16 +132,9 @@ type CreateUserResponse struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func CreateUserResponseFromBytes(data []byte) (*CreateUserResponse, error) {
-	t := &CreateUserResponse{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *CreateUserResponse) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *CreateUserResponse) Reset()                   { *m = CreateUserResponse{} }
-func (m *CreateUserResponse) String() string           { return proto.CompactTextString(m) }
-func (*CreateUserResponse) ProtoMessage()              {}
+func (m *CreateUserResponse) Reset()         { *m = CreateUserResponse{} }
+func (m *CreateUserResponse) String() string { return proto.CompactTextString(m) }
+func (*CreateUserResponse) ProtoMessage()    {}
 func (*CreateUserResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_116e343673f7ffaf, []int{2}
 }
@@ -207,16 +186,9 @@ type VerifyUserRequest struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func VerifyUserRequestFromBytes(data []byte) (*VerifyUserRequest, error) {
-	t := &VerifyUserRequest{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *VerifyUserRequest) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *VerifyUserRequest) Reset()                   { *m = VerifyUserRequest{} }
-func (m *VerifyUserRequest) String() string           { return proto.CompactTextString(m) }
-func (*VerifyUserRequest) ProtoMessage()              {}
+func (m *VerifyUserRequest) Reset()         { *m = VerifyUserRequest{} }
+func (m *VerifyUserRequest) String() string { return proto.CompactTextString(m) }
+func (*VerifyUserRequest) ProtoMessage()    {}
 func (*VerifyUserRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_116e343673f7ffaf, []int{3}
 }
@@ -262,16 +234,9 @@ type VerifyUserResponse struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func VerifyUserResponseFromBytes(data []byte) (*VerifyUserResponse, error) {
-	t := &VerifyUserResponse{}
-	err := proto.Unmarshal(data, t)
-	return t, err
-}
-
-func (m *VerifyUserResponse) ToBytes() ([]byte, error) { return proto.Marshal(m) }
-func (m *VerifyUserResponse) Reset()                   { *m = VerifyUserResponse{} }
-func (m *VerifyUserResponse) String() string           { return proto.CompactTextString(m) }
-func (*VerifyUserResponse) ProtoMessage()              {}
+func (m *VerifyUserResponse) Reset()         { *m = VerifyUserResponse{} }
+func (m *VerifyUserResponse) String() string { return proto.CompactTextString(m) }
+func (*VerifyUserResponse) ProtoMessage()    {}
 func (*VerifyUserResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_116e343673f7ffaf, []int{4}
 }
