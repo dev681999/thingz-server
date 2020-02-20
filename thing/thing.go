@@ -12,6 +12,7 @@ import (
 	ruleTopics "thingz-server/rule/topics"
 	proto "thingz-server/thing/proto"
 
+	"github.com/go-redis/redis"
 	log "github.com/sirupsen/logrus"
 
 	"github.com/globalsign/mgo"
@@ -36,8 +37,15 @@ func randStringBytes(n int) string {
 	return string(b)
 }
 
-func getNewID() string {
-	return randStringBytes(8)
+func getNewID(c *redis.Client) string {
+	for {
+		id := randStringBytes(8)
+		_, err := c.Get(fmt.Sprintf("phy_id_%s", id)).Result()
+		if err == redis.Nil {
+			c.Set(fmt.Sprintf("phy_id_%s", id), "TAKEN", 0)
+			return id
+		}
+	}
 }
 
 func createHubChannels() []*proto.Channel {
@@ -52,7 +60,6 @@ func (a *app) createThing(_, reply string, req *proto.CreateThingRequest) {
 	db, err := a.db.GetMongoSession()
 	if err == nil {
 		defer db.Close()
-
 		if req.Thing.Name == "" {
 			req.Thing.Name = thingTypes[req.Thing.Type].Name
 		}
@@ -83,13 +90,12 @@ func (a *app) createThing(_, reply string, req *proto.CreateThingRequest) {
 			}
 		} */
 
-		for {
-			req.Thing.Id = getNewID()
-			err = db.DB("").C(collectionName).Insert(req.Thing)
-			if err == nil {
-				break
-			}
-		}
+		// for {
+		req.Thing.PhysicalId = getNewID(a.cacheClient)
+		// req.Thing.Id = bson.NewObjectId().Hex()
+		req.Thing.Id = req.Thing.PhysicalId
+		err = db.DB("").C(collectionName).Insert(req.Thing)
+		// }
 	}
 	if err != nil {
 		resp.Success = false
@@ -104,6 +110,81 @@ func (a *app) createThing(_, reply string, req *proto.CreateThingRequest) {
 		}
 
 		resp.Channels = channels
+	}
+
+	log.Printf("Request: %+v, Resposne: %+v", req, resp)
+	if reply != "" {
+		a.eb.SendMessage(reply, resp)
+	}
+}
+
+func (a *app) createThings(_, reply string, req *proto.CreateThingsRequest) {
+	log.Printf("create req: %+v", req)
+	resp := &proto.CreateThingsResponse{
+		Things: []*proto.ThingStrChannels{},
+	}
+	db, err := a.db.GetMongoSession()
+	if err == nil {
+		defer db.Close()
+
+		physicalID := getNewID(a.cacheClient)
+		for _, t := range req.Things {
+			t.PhysicalId = physicalID
+			if t.Name == "" {
+				t.Name = thingTypes[t.Type].Name
+			}
+
+			t.Channels = []*proto.Channel{}
+			for _, ch := range thingTypes[t.Type].Channels {
+				t.Channels = append(t.Channels, &proto.Channel{
+					Id:       ch.Id,
+					Name:     ch.Name,
+					Unit:     ch.Unit,
+					Type:     ch.Type,
+					IsSensor: ch.IsSensor,
+				})
+			}
+
+			t.Id = bson.NewObjectId().Hex()
+			err = db.DB("").C(collectionName).Insert(t)
+			if err != nil {
+				break
+			}
+		}
+		/* switch req.Thing.Type {
+		case thingTypeToInt["HUB"]:
+			req.Thing.Channels = createHubChannels()
+		default:
+			req.Thing.Channels = []*proto.Channel{}
+			for _, ch := range thingTypes[req.Thing.Type].Channels {
+				req.Thing.Channels = append(req.Thing.Channels, &proto.Channel{
+					Id:       ch.Id,
+					Name:     ch.Name,
+					Unit:     ch.Unit,
+					Type:     ch.Type,
+					IsSensor: ch.IsSensor,
+				})
+			}
+		} */
+	}
+	if err != nil {
+		resp.Success = false
+		resp.Error = err.Error()
+	} else {
+		resp.Success = true
+		for _, t := range req.Things {
+			channels := []string{}
+
+			for _, ch := range t.Channels {
+				channels = append(channels, ch.GetId())
+			}
+
+			resp.Things = append(resp.Things, &proto.ThingStrChannels{
+				Id:       t.Id,
+				Channels: channels,
+			})
+		}
+		// resp.Id = req.Thing.Id
 	}
 
 	log.Printf("Request: %+v, Resposne: %+v", req, resp)
@@ -129,6 +210,34 @@ func (a *app) getThing(_, reply string, req *proto.GetThingRequest) {
 	} else {
 		resp.Success = true
 		resp.Thing = t
+	}
+
+	log.Printf("Request: %+v, Resposne: %+v", req, resp)
+	if reply != "" {
+		a.eb.SendMessage(reply, resp)
+	}
+}
+
+func (a *app) updateThing(_, reply string, req *proto.UpdateThingRequest) {
+	log.Printf("create req: %+v", req)
+	resp := &proto.UpdateThingResponse{}
+	db, err := a.db.GetMongoSession()
+	if err == nil {
+		defer db.Close()
+		err = db.DB("").C(collectionName).Update(lib.M{
+			"_id": req.Thing,
+		}, bson.M{
+			"$set": bson.M{
+				"name":  req.Name,
+				"group": req.Group,
+			},
+		})
+	}
+	if err != nil {
+		resp.Success = false
+		resp.Error = err.Error()
+	} else {
+		resp.Success = true
 	}
 
 	log.Printf("Request: %+v, Resposne: %+v", req, resp)
@@ -206,6 +315,34 @@ func (a *app) deleteThing(_, reply string, req *proto.DeleteThingRequest) {
 		})
 	}
 
+	if err != nil {
+		resp.Success = false
+		resp.Error = err.Error()
+	} else {
+		resp.Success = true
+	}
+
+	log.Printf("Request: %+v, Resposne: %+v", req, resp)
+	if reply != "" {
+		a.eb.SendMessage(reply, resp)
+	}
+}
+
+func (a *app) updateChannelName(_, reply string, req *proto.UpdateChannelNameRequest) {
+	log.Printf("create req: %+v", req)
+	resp := &proto.UpdateChannelNameResponse{}
+	db, err := a.db.GetMongoSession()
+	if err == nil {
+		defer db.Close()
+		err = db.DB("").C(collectionName).Update(lib.M{
+			"_id":         req.Thing,
+			"channels.id": req.Channel,
+		}, bson.M{
+			"$set": bson.M{
+				"channels.$.name": req.Name,
+			},
+		})
+	}
 	if err != nil {
 		resp.Success = false
 		resp.Error = err.Error()
@@ -324,7 +461,7 @@ func (a *app) updateChannels(_, reply string, req *proto.UpdateChannelsRequest) 
 }
 
 func (a *app) updateThingsChannels(_, reply string, req *proto.UpdateThingsChannelsRequest) {
-	log.Printf("create req: %+v", req)
+	log.Printf("updateThingsChannels req: %+v", req)
 	resp := &proto.UpdateThingsChannelsResponse{}
 	db, err := a.db.GetMongoSession()
 	if err == nil {
@@ -339,8 +476,9 @@ func (a *app) updateThingsChannels(_, reply string, req *proto.UpdateThingsChann
 
 			req := &mqttProto.UpdateThingRequest{
 				Thing: &mqttProto.Thing{
-					Id:       thing.Id,
-					Channels: []*mqttProto.Channel{},
+					Id:         thing.Id,
+					PhysicalId: thing.PhysicalId,
+					Channels:   []*mqttProto.Channel{},
 				},
 			}
 
@@ -408,14 +546,19 @@ func (a *app) updateThingsChannels(_, reply string, req *proto.UpdateThingsChann
 							StringValue: channel.StringValue,
 							DataValue:   channel.DataValue,
 							Unit:        int32(channel.Unit),
-							Channel:     channel.Name,
+							Channel:     channel.Id,
 						}
 
 						ruleReq := ruleProto.CheckThingRuleRequest{
 							Update: rule,
 						}
 
-						a.eb.SendMessage(ruleTopics.CheckThingRule, ruleReq)
+						log.Printf("sending to rule engine %+v", ruleReq)
+
+						err := a.eb.SendMessage(ruleTopics.CheckThingRule, &ruleReq)
+						if err != nil {
+							log.Println(err)
+						}
 					}
 				}(a, thing)
 			}
@@ -444,7 +587,7 @@ func (a *app) generateAssignThing(_, reply string, req *proto.GenerateAssignThin
 		defer db.Close()
 		var n int
 		n, err = db.DB("").C(collectionName).Find(bson.M{
-			"_id": req.Id,
+			"physicalId": req.Id,
 			"$or": []bson.M{{
 				"project": "",
 			}, {
@@ -498,10 +641,10 @@ func (a *app) assignThing(_, reply string, req *proto.AssignThingRequest) {
 		db, err = a.db.GetMongoSession()
 		if err == nil {
 			defer db.Close()
-			t := &proto.Thing{}
+			// t := &proto.Thing{}
 			var change *mgo.ChangeInfo
-			change, err = db.DB("").C(collectionName).Find(bson.M{
-				"_id": id,
+			change, err = db.DB("").C(collectionName).UpdateAll(bson.M{
+				"physicalId": id,
 				"$or": []bson.M{{
 					"project": "",
 				}, {
@@ -510,13 +653,11 @@ func (a *app) assignThing(_, reply string, req *proto.AssignThingRequest) {
 					}},
 				},
 				// "key": req.Key,
-			}).Apply(mgo.Change{
-				Update: bson.M{
-					"$set": bson.M{
-						"project": project,
-					},
+			}, bson.M{
+				"$set": bson.M{
+					"project": project,
 				},
-			}, t)
+			})
 			log.Printf("Change %+v, err %v", change, err)
 			if err == nil {
 				if change.Matched == 0 || change.Updated == 0 {
@@ -525,7 +666,6 @@ func (a *app) assignThing(_, reply string, req *proto.AssignThingRequest) {
 			} else {
 				err = errors.New("wrong key id pair")
 			}
-
 		}
 	}
 
@@ -641,10 +781,10 @@ func (a *app) updateThingConfig(_, reply string, req *proto.UpdateThingConfigReq
 	if err == nil {
 		defer db.Close()
 		err = db.DB("").C(collectionName).Update(lib.M{
-			"thing": req.Thing,
+			"_id": req.Thing,
 		}, lib.M{
 			"$set": lib.M{
-				"comfig": req.Config,
+				"config": req.Config,
 			},
 		})
 	}
@@ -672,6 +812,32 @@ func (a *app) getThingTypes(_, reply string, req *proto.GetThingTypesRequest) {
 			Success: true,
 			Types:   types,
 		})
+	}
+}
+
+func (a *app) projectGroupThings(_, reply string, req *proto.ProjectGroupThingsRequest) {
+	log.Printf("create req: %+v", req)
+	resp := &proto.ProjectGroupThingsResponse{}
+	things := []*proto.Thing{}
+	db, err := a.db.GetMongoSession()
+	if err == nil {
+		defer db.Close()
+		err = db.DB("").C(collectionName).Find(lib.M{"project": req.Project, "group": req.Group}).Select(bson.M{
+			"secret": 0,
+		}).All(&things)
+	}
+
+	if err != nil {
+		resp.Success = false
+		resp.Error = err.Error()
+	} else {
+		resp.Success = true
+		resp.Things = things
+	}
+
+	log.Printf("Request: %+v, Resposne: %+v", req, resp)
+	if reply != "" {
+		a.eb.SendMessage(reply, resp)
 	}
 }
 

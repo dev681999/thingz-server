@@ -97,8 +97,10 @@ func (a *app) Init() error {
 		lib.Listener{
 			Topic: topics.CreateThing,
 			Func:  a.createThing,
-		},
-		lib.Listener{
+		}, {
+			Topic: topics.CreateThings,
+			Func:  a.createThings,
+		}, lib.Listener{
 			Topic: topics.GetThing,
 			Func:  a.getThing,
 		},
@@ -153,6 +155,12 @@ func (a *app) Init() error {
 		lib.Listener{
 			Topic: topics.GetThingTypes,
 			Func:  a.getThingTypes,
+		}, {
+			Topic: topics.UpdateThing,
+			Func:  a.updateThing,
+		}, {
+			Topic: topics.UpdateChannelName,
+			Func:  a.updateChannelName,
 		},
 	}
 

@@ -170,6 +170,12 @@ func (rule *Rule) GetAllThings() []string {
 		things = append(things, t)
 	}
 
+	if rule.TriggerCommands != nil && len(rule.TriggerCommands) > 0 {
+		for _, cmd := range rule.TriggerCommands {
+			things = append(things, cmd.Thing)
+		}
+	}
+
 	return things
 }
 

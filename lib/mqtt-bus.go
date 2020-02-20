@@ -7,6 +7,7 @@ import (
 
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"github.com/golang/protobuf/proto"
+	log "github.com/sirupsen/logrus"
 )
 
 // Msg is Mesasge structure
@@ -68,11 +69,10 @@ func (p *MqttProtocolBus) Connect() error {
 	opts := mqtt.NewClientOptions()
 
 	opts.AddBroker(p.ServerURL)
-	opts.SetClientID(p.ClientID)
+	opts.SetClientID("mqttServerThingz")
 
 	var f mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Message) {
 		p.defaultMsgHandler(msg.Topic(), msg.Payload())
-
 	}
 
 	opts.SetDefaultPublishHandler(f)
@@ -160,7 +160,9 @@ func (p *MqttProtocolBus) Close() {
 
 // RegisterListener too MQTT broker
 func (p *MqttProtocolBus) RegisterListener(topic string, listener func(*Msg)) error {
+	log.Printf(`registering: "%s"`, topic)
 	if token := p.mqttClient.Subscribe(topic, 2, func(client mqtt.Client, msg mqtt.Message) {
+		log.Println("got it", msg.Topic())
 		listener(&Msg{
 			Topic: msg.Topic(),
 			Msg:   msg.Payload(),

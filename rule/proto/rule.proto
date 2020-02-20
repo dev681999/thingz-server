@@ -26,7 +26,8 @@ message Channel {
 
 message TriggerCommand {
   string thing = 1;
-  repeated Channel channels = 2;
+  string physicalId = 2;
+  repeated Channel channels = 3;
 }
 
 message ThingChLink { string uid = 1; }
@@ -53,6 +54,7 @@ message Rule {
   string uid = 18;
   bool isLeaf = 19;
   string root = 20;
+  string physicalId = 21;
 }
 
 message CreateRuleRequest {
@@ -90,7 +92,8 @@ message CheckThingRuleResponse {
 
 message CreateThingLinkRequest {
   string thing = 1;
-  repeated string channels = 2;
+  string physicalId = 2;
+  repeated string channels = 3;
 }
 
 message CreateThingLinkResponse {

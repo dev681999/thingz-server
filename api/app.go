@@ -103,8 +103,19 @@ func (a *app) Init() error {
 	a.e.Use(middleware.Recover())
 	a.e.Use(middleware.CORS())
 
+	a.e.Static("/voice-assistant/google-smarthome", "public")
+	a.e.Static("/", "public")
+
 	a.e.POST("/login", a.login)
 	a.e.POST("/register", a.register)
+
+	a.e.POST("/voice-assistant/google-smarthome", a.googleSmartHomeHandler)
+	a.e.Any("/token-exchange", func(c echo.Context) error {
+		log.Println(c.Request().Method)
+		log.Println(c.Request().URL.String())
+
+		return c.String(200, "ok")
+	})
 
 	a.e.POST("/assign-thing", a.assignThing)
 	a.e.POST("/assign-thing/", a.assignThing)
@@ -119,6 +130,7 @@ func (a *app) Init() error {
 	project := api.Group("/project")
 	thing := api.Group("/thing")
 	rule := api.Group("/rule")
+	scene := api.Group("/scene")
 
 	project.POST("", a.createProject)
 	project.POST("/", a.createProject)
@@ -129,17 +141,53 @@ func (a *app) Init() error {
 	project.DELETE("/:id", a.deleteProject)
 	project.DELETE("/:id/", a.deleteProject)
 
+	project.POST("/:id/groups", a.addProjectGroup)
+	project.POST("/:id/groups/", a.addProjectGroup)
+
+	project.DELETE("/:id/groups", a.deleteProjectGroup)
+	project.DELETE("/:id/groups/", a.deleteProjectGroup)
+
 	project.GET("/:id/things", a.projectThings)
 	project.GET("/:id/things/", a.projectThings)
+
+	project.GET("/:id/scenes", a.userScenes)
+	project.GET("/:id/scenes/", a.userScenes)
 
 	project.GET("/:id/rules", a.projectRules)
 	project.GET("/:id/rules/", a.projectRules)
 
+	scene.POST("", a.createScene)
+	scene.POST("/", a.createScene)
+
+	/* scene.GET("", a.userScenes)
+	scene.GET("/", a.userScenes) */
+
+	scene.DELETE("/:id", a.deleteScene)
+	scene.DELETE("/:id/", a.deleteScene)
+
+	scene.PATCH("/:id", a.updateScene)
+	scene.PATCH("/:id/", a.updateScene)
+
+	scene.POST("/:id/activate", a.activateScene)
+	scene.POST("/:id/activate/", a.activateScene)
+
 	thing.POST("", a.createThing)
 	thing.POST("/", a.createThing)
 
+	/* thing.POST("/things", a.createThings)
+	thing.POST("/things/", a.createThings)
+	*/
 	thing.GET("/:id", a.getThing)
 	thing.GET("/:id/", a.getThing)
+
+	thing.PATCH("/:id", a.updateThing)
+	thing.PATCH("/:id/", a.updateThing)
+
+	thing.PATCH("/:id/config", a.updateThingConfig)
+	thing.PATCH("/:id/config/", a.updateThingConfig)
+
+	thing.PATCH("/:id/channel/name", a.updateThingChannelName)
+	thing.PATCH("/:id/channel/name/", a.updateThingChannelName)
 
 	thing.GET("/:id/series", a.getThingSeries)
 	thing.GET("/:id/series/", a.getThingSeries)
@@ -172,6 +220,9 @@ func (a *app) Init() error {
 
 	admin.POST("/thing", a.adminCreateThing)
 	admin.POST("/thing/", a.adminCreateThing)
+
+	admin.POST("/things", a.adminCreateThings)
+	admin.POST("/things/", a.adminCreateThings)
 
 	admin.GET("/thing/types", a.adminGetThingTypes)
 	admin.GET("/thing/types/", a.adminGetThingTypes)

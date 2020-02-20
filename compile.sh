@@ -17,3 +17,6 @@ go build -o ../build/user
 
 cd ../rule
 go build -o ../build/rule
+
+cd ../scene
+go build -o ../build/scene

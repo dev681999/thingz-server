@@ -42,6 +42,60 @@ func (a *app) adminGetAllThings(c echo.Context) error {
 	})
 }
 
+func (a *app) adminCreateThings(c echo.Context) error {
+	things := []int32{}
+	err := c.Bind(&things)
+	if err != nil {
+		log.Printf("error: %+v", err)
+		return a.makeError(c, http.StatusInternalServerError, err)
+	}
+
+	log.Printf("creating devices: %+v", things)
+
+	req := &thingP.CreateThingsRequest{
+		Things: []*thingP.Thing{},
+	}
+
+	for _, t := range things {
+		req.Things = append(req.Things, &thingP.Thing{
+			Type: t,
+		})
+	}
+
+	res := &thingP.CreateThingsResponse{}
+	err = a.eb.RequestMessage(thingT.CreateThings, req, res, lib.DefaultTimeout)
+	if err != nil {
+		log.Printf("error: %+v", err)
+		return a.makeError(c, http.StatusInternalServerError, err)
+	}
+	if !res.GetSuccess() {
+		log.Printf("error: %+v", res.GetError())
+		return a.makeError(c, http.StatusUnauthorized, errors.New(res.GetError()))
+	}
+
+	for _, t := range res.Things {
+		trReq := &ruleP.CreateThingLinkRequest{
+			Thing:    t.GetId(),
+			Channels: t.Channels,
+		}
+		trRes := &ruleP.CreateThingLinkResponse{}
+
+		err = a.eb.RequestMessage(ruleT.CreateThingLink, trReq, trRes, lib.DefaultTimeout)
+		if err != nil {
+			log.Printf("error: %+v", err)
+			return a.makeError(c, http.StatusInternalServerError, err)
+		}
+		if !res.GetSuccess() {
+			log.Printf("error: %+v", res.GetError())
+			return a.makeError(c, http.StatusUnauthorized, errors.New(res.GetError()))
+		}
+	}
+
+	return a.sendSucess(c, echo.Map{
+		"msg": "ok",
+	})
+}
+
 func (a *app) adminCreateThing(c echo.Context) error {
 	typeOfThing, _ := strconv.Atoi(c.QueryParam("type"))
 	req := &thingP.CreateThingRequest{

@@ -9,6 +9,7 @@ message Project {
   string name = 3;
   string description = 4;
   int32 image = 5;
+  repeated string groups = 6;
 }
 
 message CreateProjectRequest { Project project = 1; }
@@ -56,6 +57,28 @@ message UpdateProjectRequest {
 }
 
 message UpdateProjectResponse {
+  bool success = 1;
+  string error = 2;
+}
+
+message AddProjectGroupRequest {
+  string id = 1;
+  string owner = 2;
+  string name = 3;
+}
+
+message AddProjectGroupResponse {
+  bool success = 1;
+  string error = 2;
+}
+
+message DeleteProjectGroupRequest {
+  string id = 1;
+  string owner = 2;
+  string name = 3;
+}
+
+message DeleteProjectGroupResponse {
   bool success = 1;
   string error = 2;
 }

@@ -1,0 +1,99 @@
+syntax = "proto3";
+
+package projectproto;
+
+message Channel {
+  // @inject_tag: bson:"_id"
+  string id = 1;
+  string thing = 2;
+  string name = 3;
+  double floatValue = 4;
+  string stringValue = 5;
+  bool boolValue = 6;
+  string dataValue = 7;
+  int32 unit = 8;
+  int32 type = 9;
+  bool isSensor = 10;
+}
+
+message Thing {
+  string id = 1;
+  string physicalId = 2;
+  repeated Channel channels = 3;
+}
+
+message Scene {
+  // @inject_tag: bson:"_id"
+  string id = 1;
+  string owner = 2;
+  string name = 3;
+  string project = 4;
+  repeated Thing things = 5;
+}
+
+message CreateSceneRequest { Scene scene = 1; }
+
+message CreateSceneResponse {
+  bool success = 1;
+  string error = 2;
+  string id = 3;
+}
+
+message UserScenesRequest {
+  string owner = 1;
+  string project = 2;
+}
+
+message UserScenesResponse {
+  bool success = 1;
+  string error = 2;
+  repeated Scene scenes = 3;
+}
+
+message GetSceneRequest {
+  string id = 1;
+  string owner = 2;
+}
+
+message GetSceneResponse {
+  bool success = 1;
+  string error = 2;
+  Scene scene = 3;
+}
+
+message DeleteSceneRequest {
+  string id = 1;
+  string owner = 2;
+}
+
+message DeleteSceneResponse {
+  bool success = 1;
+  string error = 2;
+}
+
+message UpdateSceneRequest { Scene scene = 1; }
+
+message UpdateSceneResponse {
+  bool success = 1;
+  string error = 2;
+}
+
+message ActivateSceneRequest {
+  string id = 1;
+  string owner = 2;
+}
+
+message ActivateSceneResponse {
+  bool success = 1;
+  string error = 2;
+}
+
+message ActivateScenesRequest {
+  repeated string ids = 1;
+  string owner = 2;
+}
+
+message ActivateScenesResponse {
+  bool success = 1;
+  string error = 2;
+}

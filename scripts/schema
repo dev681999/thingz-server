@@ -1,0 +1,18 @@
+<boolValue>: bool .
+<channel>: string .
+<channels>: [uid] .
+<floatValue>: int .
+<id>: string @index(exact) .
+<isLeaf>: bool .
+<isRoot>: bool @index(bool) .
+<operation>: int .
+<project>: string @index(exact) .
+<root>: string @index(exact) .
+<rules>: [uid] @reverse .
+<thing>: string .
+<thingChLink>: [uid] @reverse .
+<thingId>: string @index(exact) .
+<triggerCommands>: [uid] .
+<unit>: int .
+<val>: bool .
+<vals>: string .

@@ -32,6 +32,8 @@ message Thing {
   repeated Channel channels = 5;
   int32 type = 6;
   string config = 7;
+  string group = 8;
+  string physicalId = 9;
 }
 
 message Series {
@@ -54,6 +56,19 @@ message CreateThingResponse {
   repeated string channels = 4;
 }
 
+message ThingStrChannels {
+  string id = 1;
+  repeated string channels = 2;
+}
+
+message CreateThingsRequest { repeated Thing things = 1; }
+
+message CreateThingsResponse {
+  bool success = 1;
+  string error = 2;
+  repeated ThingStrChannels things = 3;
+}
+
 message GetThingRequest { string thing = 1; }
 
 message GetThingResponse {
@@ -62,9 +77,32 @@ message GetThingResponse {
   Thing thing = 3;
 }
 
+message UpdateThingRequest {
+  string thing = 1;
+  string owner = 2;
+  string name = 3;
+  string group = 4;
+}
+
+message UpdateThingResponse {
+  bool success = 1;
+  string error = 2;
+}
+
 message ProjectThingsRequest { string project = 1; }
 
 message ProjectThingsResponse {
+  bool success = 1;
+  string error = 2;
+  repeated Thing things = 3;
+}
+
+message ProjectGroupThingsRequest {
+  string project = 1;
+  string group = 2;
+}
+
+message ProjectGroupThingsResponse {
   bool success = 1;
   string error = 2;
   repeated Thing things = 3;
@@ -86,12 +124,26 @@ message DeleteThingResponse {
 
 message ThingChannels {
   string id = 1;
-  repeated Channel channels = 2;
+  string physicalId = 2;
+  repeated Channel channels = 3;
+}
+
+message UpdateChannelNameRequest {
+  string thing = 1;
+  string channel = 2;
+  string name = 3;
+  string owner = 4;
+}
+
+message UpdateChannelNameResponse {
+  bool success = 1;
+  string error = 2;
 }
 
 message UpdateChannelsRequest {
-  string Thing = 1;
-  repeated Channel channels = 2;
+  string thing = 1;
+  string physicalId = 2;
+  repeated Channel channels = 3;
 }
 
 message UpdateChannelsResponse {

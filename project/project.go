@@ -33,7 +33,7 @@ func (a *app) createProject(_, reply string, req *proto.CreateProjectRequest) {
 }
 
 func (a *app) userProjects(_, reply string, req *proto.UserProjectsRequest) {
-	log.Printf("create req: %+v", req)
+	log.Printf("userProjects req: %+v", req)
 	resp := &proto.UserProjectsResponse{}
 	projects := []*proto.Project{}
 	db, err := a.db.GetMongoSession()
@@ -51,7 +51,10 @@ func (a *app) userProjects(_, reply string, req *proto.UserProjectsRequest) {
 
 	log.Printf("Request: %+v, Resposne: %+v", req, resp)
 	if reply != "" {
-		a.eb.SendMessage(reply, resp)
+		err = a.eb.SendMessage(reply, resp)
+		if err != nil {
+			log.Println("reply err", err)
+		}
 	}
 }
 
@@ -63,6 +66,60 @@ func (a *app) deleteProject(_, reply string, req *proto.DeleteProjectRequest) {
 		defer db.Close()
 		_, err = db.DB("").C(collectionName).RemoveAll(bson.M{
 			"_id": req.Id,
+		})
+	}
+	if err != nil {
+		resp.Success = false
+		resp.Error = err.Error()
+	} else {
+		resp.Success = true
+	}
+
+	log.Printf("Request: %+v, Resposne: %+v", req, resp)
+	if reply != "" {
+		a.eb.SendMessage(reply, resp)
+	}
+}
+
+func (a *app) addProjectGroup(_, reply string, req *proto.AddProjectGroupRequest) {
+	log.Printf("create req: %+v", req)
+	resp := &proto.AddProjectGroupResponse{}
+	db, err := a.db.GetMongoSession()
+	if err == nil {
+		defer db.Close()
+		err = db.DB("").C(collectionName).Update(bson.M{
+			"_id": req.Id,
+		}, bson.M{
+			"$addToSet": bson.M{
+				"groups": req.Name,
+			},
+		})
+	}
+	if err != nil {
+		resp.Success = false
+		resp.Error = err.Error()
+	} else {
+		resp.Success = true
+	}
+
+	log.Printf("Request: %+v, Resposne: %+v", req, resp)
+	if reply != "" {
+		a.eb.SendMessage(reply, resp)
+	}
+}
+
+func (a *app) deleteProjectGroup(_, reply string, req *proto.AddProjectGroupRequest) {
+	log.Printf("create req: %+v", req)
+	resp := &proto.AddProjectGroupResponse{}
+	db, err := a.db.GetMongoSession()
+	if err == nil {
+		defer db.Close()
+		err = db.DB("").C(collectionName).Update(bson.M{
+			"_id": req.Id,
+		}, bson.M{
+			"$pull": bson.M{
+				"groups": req.Name,
+			},
 		})
 	}
 	if err != nil {

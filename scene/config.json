@@ -1,0 +1,8 @@
+{
+	"dbUrl": "localhost:27017",
+	"dbUser": "",
+	"dbPass": "",
+    "dbName": "thingz-test",
+	"natsUrl": "",
+	"mqttUrl": "tcp://localhost:1883"	
+}

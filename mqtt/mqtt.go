@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"reflect"
+	"strings"
 	"thingz-server/lib"
 	proto "thingz-server/mqtt/proto"
 	topics "thingz-server/mqtt/topics"
@@ -24,7 +25,7 @@ type mqttPacket struct {
 }
 
 func (a *app) updateChannel(msg *lib.Msg) {
-	// log.Println(string(msg.Msg))
+	log.Println("updateChanel")
 	c := &mqttPacket{}
 	/* h := new(codec.MsgpackHandle)
 	dec := codec.NewDecoderBytes(msg.Msg, h)
@@ -38,7 +39,8 @@ func (a *app) updateChannel(msg *lib.Msg) {
 	log.Println("c", c)
 
 	req := &thingProto.UpdateChannelsRequest{
-		Thing:    c.Thing,
+		Thing: c.Thing,
+		// PhysicalId: c.PhysicalID,
 		Channels: []*thingProto.Channel{},
 	}
 
@@ -120,7 +122,7 @@ func (a *app) updateThing(_, reply string, req *proto.UpdateThingRequest) {
 
 	b, err := json.Marshal(msg)
 	if err == nil {
-		err = a.pb.SendMessage(topics.UpdateDevice+"/"+req.Thing.Id, b)
+		err = a.pb.SendMessage(topics.UpdateDevice+"/"+strings.Trim(req.Thing.PhysicalId, " "), b)
 	}
 
 	if err != nil {
@@ -128,7 +130,7 @@ func (a *app) updateThing(_, reply string, req *proto.UpdateThingRequest) {
 		resp.Error = err.Error()
 	} else {
 		resp.Success = true
-		log.Println(b, msg, topics.UpdateDevice+"/"+req.Thing.Id)
+		log.Println(b, msg, topics.UpdateDevice+"/"+req.Thing.PhysicalId)
 	}
 
 	log.Printf("Request: %+v, Resposne: %+v", req, resp)

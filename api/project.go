@@ -92,3 +92,49 @@ func (a *app) deleteProject(c echo.Context) error {
 
 	return a.deleteProjectThings(c)
 }
+
+func (a *app) addProjectGroup(c echo.Context) error {
+	project := c.Param("id")
+	req := &projectP.AddProjectGroupRequest{
+		Id:    project,
+		Owner: getUserFromContext(c)["id"].(string),
+		Name:  c.QueryParam("name"),
+	}
+	res := &projectP.AddProjectGroupResponse{}
+
+	log.Printf("sending request %+v", *req)
+
+	err := a.eb.RequestMessage(projectT.AddProjectGroup, req, res, lib.DefaultTimeout)
+	if err != nil {
+		log.Printf("error: %+v", err)
+		return a.makeError(c, http.StatusInternalServerError, err)
+	}
+
+	if !res.GetSuccess() {
+		return a.makeError(c, http.StatusUnauthorized, errors.New(res.GetError()))
+	}
+
+	return a.deleteProjectThings(c)
+}
+
+func (a *app) deleteProjectGroup(c echo.Context) error {
+	project := c.Param("id")
+	req := &projectP.DeleteProjectGroupRequest{
+		Id:    project,
+		Owner: getUserFromContext(c)["id"].(string),
+		Name:  c.QueryParam("name"),
+	}
+	res := &projectP.DeleteProjectGroupResponse{}
+
+	err := a.eb.RequestMessage(projectT.DeleteProjectGroup, req, res, lib.DefaultTimeout)
+	if err != nil {
+		log.Printf("error: %+v", err)
+		return a.makeError(c, http.StatusInternalServerError, err)
+	}
+
+	if !res.GetSuccess() {
+		return a.makeError(c, http.StatusUnauthorized, errors.New(res.GetError()))
+	}
+
+	return a.deleteProjectThings(c)
+}

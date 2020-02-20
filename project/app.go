@@ -84,6 +84,12 @@ func (a *app) Init() error {
 		lib.Listener{
 			Topic: topics.DeleteProject,
 			Func:  a.deleteProject,
+		}, {
+			Topic: topics.AddProjectGroup,
+			Func:  a.addProjectGroup,
+		}, {
+			Topic: topics.DeleteProjectGroup,
+			Func:  a.deleteProjectGroup,
 		},
 	}
 

@@ -21,7 +21,8 @@ message Channel {
 
 message Thing {
   string id = 1;
-  repeated Channel channels = 2;
+  string physicalId = 2;
+  repeated Channel channels = 3;
 }
 
 message UpdateThingRequest { Thing thing = 1; }

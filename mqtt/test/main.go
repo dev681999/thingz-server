@@ -34,8 +34,8 @@ func main() {
 
 	fmt.Println(*thingID, *channelID, *floatVal, *boolVal, *valType, *stringVal)
 
-	opts := mqtt.NewClientOptions().AddBroker("tcp://ec2-54-191-142-124.us-west-2.compute.amazonaws.com:1883").SetClientID("thingz-mqtt-test")
-	// opts := mqtt.NewClientOptions().AddBroker("tcp://localhost:1883").SetClientID("thingz-mqtt-test")
+	// opts := mqtt.NewClientOptions().AddBroker("tcp://ec2-54-191-142-124.us-west-2.compute.amazonaws.com:1883").SetClientID("thingz-mqtt-test")
+	opts := mqtt.NewClientOptions().AddBroker("tcp://localhost:1883").SetClientID("thingz-mqtt-test")
 	c := mqtt.NewClient(opts)
 	if token := c.Connect(); token.Wait() && token.Error() != nil {
 		panic(token.Error())

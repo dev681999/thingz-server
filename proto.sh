@@ -29,3 +29,8 @@ cd ../../rule/proto
 make proto
 
 echo RULE
+
+cd ../../scene/proto
+make proto
+
+echo SCENE

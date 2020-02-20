@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"log"
 	proto "thingz-server/thing/proto"
 )
 
@@ -11,6 +12,10 @@ type thingInfo struct {
 	Unit     proto.Unit
 	Channels []*proto.Channel
 }
+
+const (
+	thingTypeLightFan = 100
+)
 
 func init() {
 	things := []proto.Thing{}
@@ -566,7 +571,69 @@ func init() {
 			"key": "1234",
 			"project": "",
 			"type": 35,
-			"channels": []
+			"channels": [
+				{
+					"id": "sensor_1_1",
+					"name": "Sensor 1",
+					"unit": 1,
+					"isSensor": true
+				},
+				{
+					"id": "sensor_1_2",
+					"name": "Sensor 1",
+					"unit": 0,
+					"isSensor": true
+				},
+				{
+					"id": "sensor_2",
+					"name": "Sensor 2",
+					"unit": 0,
+					"isSensor": true
+				},
+				{
+					"id": "sensor_3",
+					"name": "Sensor 3",
+					"unit": 0,
+					"isSensor": true
+				},
+				{
+					"id": "sensor_4",
+					"name": "Sensor 4",
+					"unit": 0,
+					"isSensor": true
+				},
+				{
+					"id": "actuator_1",
+					"name": "Actuator 1",
+					"unit": 0
+				},
+				{
+					"id": "actuator_2",
+					"name": "Actuator 2",
+					"unit": 0
+				},
+				{
+					"id": "actuator_3",
+					"name": "Actuator 3",
+					"unit": 0
+				},
+				{
+					"id": "actuator_4",
+					"name": "Actuator 4",
+					"unit": 0
+				},
+				{
+					"id": "analog_1_1",
+					"name": "Analog",
+					"unit": 1,
+					"isSensor": true
+				},
+				{
+					"id": "analog_1_2",
+					"name": "Analog",
+					"unit": 1
+				}
+			]
 		},
 		{
 			"id": "",
@@ -593,6 +660,53 @@ func init() {
 					"isSensor": true
 				}
 			]
+		},
+		{
+			"id": "",
+			"name": "Light",
+			"type": 38,
+			"channels": [
+				{
+					"id": "onOff",
+					"name": "OnOff",
+					"unit": 0
+				},
+				{
+					"id": "brightness",
+					"name": "Brightness",
+					"unit": 1
+				}
+			]
+		},
+		{
+			"id": "",
+			"name": "Fan",
+			"type": 39,
+			"channels": [
+				{
+					"id": "onOff",
+					"name": "OnOff",
+					"unit": 0
+				},
+				{
+					"id": "Speed",
+					"name": "Speed",
+					"unit": 1
+				}
+			]
+		},
+		{
+			"id": "",
+			"name": "Motion Sensor",
+			"type": 40,
+			"channels": [
+				{
+					"id": "onOff",
+					"name": "OnOff",
+					"unit": 0,
+					"isSensor": true
+				}
+			]
 		}
 	]`), &things)
 
@@ -607,5 +721,6 @@ func init() {
 			// Unit:     t.Channels[0].Unit,
 			Channels: t.Channels,
 		})
+		log.Println("ID:", t.Type, "Name:", t.Name)
 	}
 }

@@ -37,6 +37,7 @@ func (a *app) createUser(_, reply string, req *proto.CreateUserRequest) {
 }
 
 func (a *app) verifyUser(_, reply string, req *proto.VerifyUserRequest) {
+	log.Printf("verifyUser: %+v", *req)
 	resp := &proto.VerifyUserResponse{}
 	user := &proto.User{}
 	db, err := a.db.GetMongoSession()
@@ -56,8 +57,11 @@ func (a *app) verifyUser(_, reply string, req *proto.VerifyUserRequest) {
 	}
 
 	if reply != "" {
-		a.eb.SendMessage(reply, resp)
-	} else {
 		log.Printf("Request: %+v, Resposne: %+v", req, resp)
+		err := a.eb.SendMessage(reply, resp)
+		if err != nil {
+			log.Println("err", err)
+		}
+	} else {
 	}
 }

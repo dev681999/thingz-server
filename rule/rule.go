@@ -74,6 +74,13 @@ func (a *app) findThingChUID(id string) (string, error) {
 	return resData.Devices[0].UID, nil
 }
 
+func resolvePhysicalID(r *proto.Rule, m map[string]thingProto.Thing) {
+	r.PhysicalId = m[r.Thing].PhysicalId
+	for _, subRule := range r.Rules {
+		resolvePhysicalID(subRule, m)
+	}
+}
+
 func (a *app) createRule(_, reply string, req *proto.CreateRuleRequest) {
 	log.Printf("create req: %+v", req)
 
@@ -87,6 +94,13 @@ func (a *app) createRule(_, reply string, req *proto.CreateRuleRequest) {
 		thingsMap := map[string]thingProto.Thing{}
 		err = json.Unmarshal([]byte(req.ThingsMap), &thingsMap)
 		if err == nil {
+			resolvePhysicalID(req.Rule, thingsMap)
+
+			for _, cmd := range req.Rule.TriggerCommands {
+				cmd.PhysicalId = thingsMap[cmd.Thing].PhysicalId
+				log.Println("trig thing", cmd.Thing, "phycsial id", cmd.PhysicalId)
+			}
+
 			req.Rule.Evaluate(thingsMap)
 			req.Rule.AssignRootID(req.Rule.GetId())
 
@@ -95,6 +109,7 @@ func (a *app) createRule(_, reply string, req *proto.CreateRuleRequest) {
 			dgraphRule := req.Rule.GetWithDType()
 			pb, err := json.Marshal(dgraphRule)
 			if err == nil {
+				log.Println("sendig dgraph", string(pb))
 				mu.SetJson = pb
 				_, err = a.dg.NewTxn().Mutate(ctx, mu)
 				/* if err == nil {
@@ -152,7 +167,7 @@ func (a *app) deleteRule(_, reply string, req *proto.DeleteRuleRequest) {
 
 	ctx := context.Background()
 	dRes, err := a.dg.NewReadOnlyTxn().Query(ctx, `{
-		rules(func: eq(root, `+req.Rule+`)) {
+		rules	(func: eq(root, `+req.Rule+`)) {
 			uid
 		}
 	}`)
@@ -160,6 +175,7 @@ func (a *app) deleteRule(_, reply string, req *proto.DeleteRuleRequest) {
 	if err == nil {
 		err = json.Unmarshal(dRes.Json, ids)
 		if err == nil {
+			log.Printf("got ids: %+v", ids)
 			pb, err := json.Marshal(ids.Rules)
 			if err == nil {
 				mu := &api.Mutation{
@@ -197,6 +213,7 @@ func (a *app) projectRules(_, reply string, req *proto.ProjectRulesRequest) {
 		v as var(func: eq(project, `+req.Project+`)) @filter(eq(isRoot, true))
 		rules(func: uid(v)) @recurse {
 			id
+			physicalId
 			operation
 			val
 			vals
@@ -214,6 +231,7 @@ func (a *app) projectRules(_, reply string, req *proto.ProjectRulesRequest) {
 			id
 			triggerCommands {
 				thing
+				physicalId
 				channels {
 					id
 					boolValue
@@ -429,11 +447,12 @@ func (a *app) checkThingRule(_, reply string, req *proto.CheckThingRuleRequest) 
 		
 		rules(func: uid(ID)) @recurse {
 			id: v as id
+			physicalId
 			operation
 			val
 			vals
 			unit
-			boolVal
+			boolValue
 			floatValue
 			thing
 			channel
@@ -446,6 +465,7 @@ func (a *app) checkThingRule(_, reply string, req *proto.CheckThingRuleRequest) 
 			id
 			triggerCommands {
 				thing
+				physicalId
 				channels {
 					id
 					boolValue
@@ -464,7 +484,7 @@ func (a *app) checkThingRule(_, reply string, req *proto.CheckThingRuleRequest) 
 	rules := map[string]*proto.Rule{}
 	dResp, err := a.dg.NewTxn().Query(ctx, q)
 	if err == nil {
-		// log.Println("res", string(dResp.GetJson()))
+		log.Println("res", string(dResp.GetJson()))
 		err = json.Unmarshal(dResp.GetJson(), result)
 		if err == nil {
 			updatedRuleNodes := map[string]*proto.Rule{}
@@ -570,8 +590,9 @@ func (a *app) checkThingRule(_, reply string, req *proto.CheckThingRuleRequest) 
 
 				for _, cmd := range cmds {
 					thingChannel := &thingProto.ThingChannels{
-						Id:       cmd.Thing,
-						Channels: []*thingProto.Channel{},
+						Id:         cmd.Thing,
+						Channels:   []*thingProto.Channel{},
+						PhysicalId: cmd.PhysicalId,
 					}
 
 					for _, channel := range cmd.Channels {

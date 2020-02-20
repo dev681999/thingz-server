@@ -72,6 +72,54 @@ func (a *app) getThing(c echo.Context) error {
 	})
 }
 
+func (a *app) updateThing(c echo.Context) error {
+	thing := c.Param("id")
+	req := &thingP.UpdateThingRequest{
+		Thing: thing,
+		Name:  c.QueryParam("name"),
+		Group: c.QueryParam("group"),
+	}
+	res := &thingP.UpdateThingResponse{}
+
+	err := a.eb.RequestMessage(thingT.UpdateThing, req, res, lib.DefaultTimeout)
+	if err != nil {
+		log.Printf("error: %+v", err)
+		return a.makeError(c, http.StatusInternalServerError, err)
+	}
+
+	if !res.GetSuccess() {
+		return a.makeError(c, http.StatusUnauthorized, errors.New(res.GetError()))
+	}
+
+	return a.sendSucess(c, echo.Map{
+		"msg": "ok",
+	})
+}
+
+func (a *app) updateThingChannelName(c echo.Context) error {
+	thing := c.Param("id")
+	req := &thingP.UpdateChannelNameRequest{
+		Thing:   thing,
+		Channel: c.QueryParam("channel"),
+		Name:    c.QueryParam("name"),
+	}
+	res := &thingP.UpdateChannelNameResponse{}
+
+	err := a.eb.RequestMessage(thingT.UpdateChannelName, req, res, lib.DefaultTimeout)
+	if err != nil {
+		log.Printf("error: %+v", err)
+		return a.makeError(c, http.StatusInternalServerError, err)
+	}
+
+	if !res.GetSuccess() {
+		return a.makeError(c, http.StatusUnauthorized, errors.New(res.GetError()))
+	}
+
+	return a.sendSucess(c, echo.Map{
+		"msg": "ok",
+	})
+}
+
 func (a *app) getThingSeries(c echo.Context) error {
 	thing := c.Param("id")
 	req := &thingP.ThingSeriesRequest{
@@ -98,30 +146,58 @@ func (a *app) getThingSeries(c echo.Context) error {
 
 func (a *app) projectThings(c echo.Context) error {
 	project := c.Param("id")
-	req := &thingP.ProjectThingsRequest{
-		Project: project,
-	}
-	res := &thingP.ProjectThingsResponse{}
+	group := c.QueryParam("group")
+	things := []*thingP.Thing{}
 
-	err := a.eb.RequestMessage(thingT.ProjectThings, req, res, lib.DefaultTimeout)
-	if err != nil {
-		log.Printf("error: %+v", err)
-		return a.makeError(c, http.StatusInternalServerError, err)
+	if group == "" {
+		req := &thingP.ProjectThingsRequest{
+			Project: project,
+		}
+		res := &thingP.ProjectThingsResponse{}
+
+		err := a.eb.RequestMessage(thingT.ProjectThings, req, res, lib.DefaultTimeout)
+		if err != nil {
+			log.Printf("error: %+v", err)
+			return a.makeError(c, http.StatusInternalServerError, err)
+		}
+
+		if !res.GetSuccess() {
+			return a.makeError(c, http.StatusUnauthorized, errors.New(res.GetError()))
+		}
+
+		if res.Things == nil {
+			res.Things = []*thingP.Thing{}
+		}
+
+		things = res.Things
+	} else {
+		req := &thingP.ProjectGroupThingsRequest{
+			Project: project,
+		}
+		res := &thingP.ProjectGroupThingsResponse{}
+
+		err := a.eb.RequestMessage(thingT.ProjectGroupThings, req, res, lib.DefaultTimeout)
+		if err != nil {
+			log.Printf("error: %+v", err)
+			return a.makeError(c, http.StatusInternalServerError, err)
+		}
+
+		if !res.GetSuccess() {
+			return a.makeError(c, http.StatusUnauthorized, errors.New(res.GetError()))
+		}
+
+		if res.Things == nil {
+			res.Things = []*thingP.Thing{}
+		}
+
+		things = res.Things
 	}
 
-	if !res.GetSuccess() {
-		return a.makeError(c, http.StatusUnauthorized, errors.New(res.GetError()))
-	}
-
-	if res.Things == nil {
-		res.Things = []*thingP.Thing{}
-	}
-
-	log.Println("got things", res.GetThings())
+	log.Println("got things", things)
 
 	return a.sendSucess(c, echo.Map{
 		"msg":    "ok",
-		"things": res.GetThings(),
+		"things": things,
 	})
 }
 
@@ -241,13 +317,15 @@ func (a *app) deassignThing(c echo.Context) error {
 
 func (a *app) updateChannel(c echo.Context) error {
 	thing := c.Param("id")
+	physicalID := c.QueryParam("physicalId")
 	updateReq := &thingP.UpdateThingsChannelsRequest{
 		Things: []*thingP.ThingChannels{},
 	}
 
 	thingChannel := &thingP.ThingChannels{
-		Id:       thing,
-		Channels: []*thingP.Channel{},
+		Id:         thing,
+		PhysicalId: physicalID,
+		Channels:   []*thingP.Channel{},
 	}
 
 	channel := &thingP.Channel{}
@@ -262,6 +340,8 @@ func (a *app) updateChannel(c echo.Context) error {
 	updateReq.Things = append(updateReq.Things, thingChannel)
 
 	updateRes := &thingP.UpdateThingsChannelsResponse{}
+
+	log.Printf("updateCHanel phy: %v || %+v", physicalID, updateReq)
 
 	err = a.eb.RequestMessage(thingT.UpdateThingsChannels, updateReq, updateRes, lib.DefaultTimeout)
 	if err != nil {
@@ -293,4 +373,21 @@ func (a *app) sendUpdateThing(_, reply string, req *proto.SendThingUpdateRequest
 	a.eventServer.SendMessage("/api/thing/events", sse.SimpleMessage(string(b)))
 
 	log.Printf("event sent to %v, %+v", req.Update.Thing, req.Update.Channels)
+}
+
+func (a *app) updateThingConfig(c echo.Context) error {
+	req := &thingP.UpdateThingConfigRequest{
+		Thing:  c.Param("id"),
+		Config: c.QueryParam("config"),
+	}
+	resp := &thingP.UpdateThingConfigResponse{}
+
+	err := a.eb.RequestMessage(thingT.UpdateThingConfig, req, resp, lib.DefaultTimeout)
+	if err != nil {
+		log.Println(err)
+		return a.makeError(c, http.StatusBadRequest, err)
+	}
+	return a.sendSucess(c, echo.Map{
+		"msg": "ok",
+	})
 }
